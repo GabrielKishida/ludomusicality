@@ -123,72 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &138331989
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 138331992}
-  - component: {fileID: 138331991}
-  - component: {fileID: 138331990}
-  m_Layer: 0
-  m_Name: EventManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &138331990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 138331989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d42f9ea38ac05b843a782652c4d2cb84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onJumpPressed:
-    m_PersistentCalls:
-      m_Calls: []
-  onHorizontalMove:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &138331991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 138331989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
---- !u!4 &138331992
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 138331989}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0019368529, y: 1.0611403, z: 9.921412}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &328132228
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -672,10 +606,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53efe570cd7d1bb4d9dd9395ca2657ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
+  rotationSpeed: 1000
+  maxSpeed: 1000
+  acceleration: 1
+  deacceleration: 0.8
+  minimumSpeed: 0.01
   jumpSpeed: 8
   gravity: 20
-  eventManager: {fileID: 138331990}
+  playerInput:
+    m_Name: Player Input
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a71e3489-7bea-4c22-b9df-f13e593107c7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 809a4d7c-bb2b-4b4a-a017-4071631af982
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Player Input
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 9ed7438c-c0fe-4f89-9cf6-fdcf5fb9abe1
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Player Input
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 95e73374-f448-4afb-a477-3fa9f365150b
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Player Input
+      m_Flags: 8
+    - m_Name: left
+      m_Id: a1ea6bda-d5d8-4848-a942-2b3be58cdcd6
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Player Input
+      m_Flags: 8
+    - m_Name: right
+      m_Id: da5e09d9-4a04-4cb4-af00-3433c3bf235c
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Player Input
+      m_Flags: 8
+    m_Flags: 0
 --- !u!143 &1027218722
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1034,4 +1020,3 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 659978824}
   - {fileID: 393521951}
-  - {fileID: 138331992}
