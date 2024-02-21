@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,23 +9,34 @@ public class PlayerController : MonoBehaviour
     public float acceleration = 1.0f;
     public float deacceleration = 0.9f;
     public float minimumSpeed = 0.5f;
-    public float jumpSpeed = 8.0f; // Jump speed
     public float gravity = 20.0f; // Gravity force
 
     private Vector2 currentSpeed = Vector2.zero;
 
     private CharacterController controller;
     private Vector3 moveDirection = Vector3.zero;
-    public InputAction playerInput;
+    public PlayerInputActions playerControls;
+    private InputAction move;
+    private InputAction roll;
+
+    private void Awake()
+    {
+        playerControls = new PlayerInputActions();
+    }
 
     private void OnEnable()
     {
-        playerInput.Enable();
+        move = playerControls.Player.Move;
+        roll = playerControls.Player.Roll;
+        move.Enable();
+        roll.Enable();
+
     }
 
     private void OnDisable()
     {
-        playerInput.Disable();
+        move.Disable();
+        roll.Disable();
     }
 
     void Start()
@@ -35,45 +47,35 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (controller.isGrounded)
+        if (currentSpeed.magnitude < minimumSpeed)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                moveDirection.y = jumpSpeed;
-            }
-
-
-            if (currentSpeed.magnitude < minimumSpeed)
-            {
-                currentSpeed = Vector2.zero;
-            }
-            else
-            {
-                currentSpeed = currentSpeed * deacceleration;
-            }
-
-            Vector2 moveInput = playerInput.ReadValue<Vector2>();
-            if (moveInput != Vector2.zero)
-            {
-                currentSpeed += moveInput * acceleration;
-                if (currentSpeed.magnitude > maxSpeed)
-                {
-                    currentSpeed = Vector3.ClampMagnitude(currentSpeed, maxSpeed);
-                }
-            }
-
-            moveDirection = new Vector3(currentSpeed.x, 0.0f, currentSpeed.y);
-            if (moveDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-
+            currentSpeed = Vector2.zero;
         }
-        // Apply gravity
-        moveDirection.y -= gravity * Time.deltaTime;
+        else
+        {
+            currentSpeed = currentSpeed * deacceleration;
+        }
 
-        // Move the controller
+        Vector2 moveInput = move.ReadValue<Vector2>();
+        if (moveInput != Vector2.zero)
+        {
+            currentSpeed += moveInput * acceleration;
+            if (currentSpeed.magnitude > maxSpeed)
+            {
+                currentSpeed = Vector3.ClampMagnitude(currentSpeed, maxSpeed);
+            }
+        }
+
+        moveDirection = new Vector3(currentSpeed.x, 0.0f, currentSpeed.y);
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+
+
+        moveDirection.y -= gravity;
+
         controller.Move(moveDirection * Time.deltaTime);
     }
 }
