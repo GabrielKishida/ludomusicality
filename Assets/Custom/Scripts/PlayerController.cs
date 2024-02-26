@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float dragCoefficient = 0.02f;
     public float minimumSpeed = 0.5f;
     public float gravity = 20.0f; // Gravity force
+    public Hitbox hitbox;
 
     private Vector2 currentSpeed = Vector2.zero;
     private CharacterController controller;
@@ -84,9 +86,18 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
+
         if (attack.ReadValue<float>() == 1)
         {
-            Debug.Log("Attack");
+            StartCoroutine(AttackCoroutine());
         }
+
+    }
+
+    private IEnumerator AttackCoroutine()
+    {
+        hitbox.hitboxCollider.enabled = true;
+        yield return new WaitForSeconds(1);
+        hitbox.hitboxCollider.enabled = false;
     }
 }
