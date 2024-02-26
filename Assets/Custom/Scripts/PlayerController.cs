@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float rotationSpeed = 1000f;
-    public float maxSpeed = 8.0f; // Movement speed
-    public float acceleration = 1.0f;
-    public float deacceleration = 0.9f;
+    public float maxSpeed = 15.0f; // Movement speed
+    public float acceleration = 0.5f;
+    public float dragCoefficient = 0.02f;
     public float minimumSpeed = 0.5f;
     public float gravity = 20.0f; // Gravity force
 
@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
     }
 
-
     void Update()
     {
         if (currentSpeed.magnitude < minimumSpeed)
@@ -53,7 +52,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            currentSpeed = currentSpeed * deacceleration;
+            currentSpeed = currentSpeed - currentSpeed * dragCoefficient;
         }
 
         Vector2 moveInput = move.ReadValue<Vector2>();
