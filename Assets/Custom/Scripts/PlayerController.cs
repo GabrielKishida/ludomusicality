@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,16 +11,19 @@ public class PlayerController : MonoBehaviour
     public float minimumSpeed = 0.5f;
     public float gravity = 20.0f; // Gravity force
     public GameObject hitbox;
-
-    private Vector2 currentSpeed = Vector2.zero;
     private CharacterController controller;
-    private Vector3 moveDirection = Vector3.zero;
     public PlayerInputActions playerControls;
     private InputAction move;
     private InputAction roll;
     private InputAction attack;
+    private InputAction mouseDirection;
+
+
+    private Vector2 currentSpeed = Vector2.zero;
+    private Vector3 moveDirection = Vector3.zero;
     private bool isAttacking = false;
     private bool isOnCooldown = false;
+    private Vector2 attackDirection = Vector2.zero;
 
     private void Awake()
     {
@@ -33,9 +35,11 @@ public class PlayerController : MonoBehaviour
         move = playerControls.Player.Move;
         roll = playerControls.Player.Roll;
         attack = playerControls.Player.Attack;
+        mouseDirection = playerControls.Player.MouseDirection;
         move.Enable();
         roll.Enable();
         attack.Enable();
+        mouseDirection.Enable();
 
     }
 
@@ -44,6 +48,7 @@ public class PlayerController : MonoBehaviour
         move.Disable();
         roll.Disable();
         attack.Disable();
+        mouseDirection.Disable();
     }
 
     void Start()
@@ -78,7 +83,13 @@ public class PlayerController : MonoBehaviour
             }
         }
         moveDirection = new Vector3(currentSpeed.x, 0.0f, currentSpeed.y);
-        if (moveDirection != Vector3.zero)
+
+        if (isAttacking)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(attackDirection.x, 0.0f, attackDirection.y));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+        else if (moveDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -99,8 +110,12 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator AttackCoroutine()
     {
+        Vector2 mouseCoordinates = mouseDirection.ReadValue<Vector2>();
+        Vector2 characterCoordinates = Camera.main.WorldToScreenPoint(transform.position);
+
         isAttacking = true;
         hitbox.SetActive(true);
+        attackDirection = mouseCoordinates - characterCoordinates;
         yield return new WaitForSeconds(0.2f);
         isAttacking = false;
         hitbox.SetActive(false);
