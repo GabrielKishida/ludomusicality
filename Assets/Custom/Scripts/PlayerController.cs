@@ -5,11 +5,15 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float rotationSpeed = 1000f;
-    public float maxSpeed = 15.0f; // Movement speed
+    public float maxSpeed = 15.0f;
     public float acceleration = 0.5f;
     public float dragCoefficient = 0.02f;
     public float minimumSpeed = 0.5f;
-    public float gravity = 20.0f; // Gravity force
+    public float gravity = 20.0f;
+    public float attackDuration = 0.2f;
+    public float attackCooldown = 0.5f;
+
+
     public GameObject hitbox;
     private CharacterController controller;
     public PlayerInputActions playerControls;
@@ -63,7 +67,7 @@ public class PlayerController : MonoBehaviour
         Attack();
     }
 
-    private void MoveCharacter()
+    private void ApplyDrag()
     {
         if (currentSpeed.magnitude < minimumSpeed)
         {
@@ -73,6 +77,10 @@ public class PlayerController : MonoBehaviour
         {
             currentSpeed = currentSpeed - currentSpeed * dragCoefficient;
         }
+    }
+
+    private Vector3 GetMoveDirection()
+    {
         Vector2 moveInput = isAttacking ? Vector2.zero : move.ReadValue<Vector2>();
         if (moveInput != Vector2.zero)
         {
@@ -82,18 +90,25 @@ public class PlayerController : MonoBehaviour
                 currentSpeed = Vector3.ClampMagnitude(currentSpeed, maxSpeed);
             }
         }
-        moveDirection = new Vector3(currentSpeed.x, 0.0f, currentSpeed.y);
+        return new Vector3(currentSpeed.x, 0.0f, currentSpeed.y);
+    }
 
+    private void RotateTowards(Vector3 direction, float rotateSpeed)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+    }
+
+    private void MoveCharacter()
+    {
+        ApplyDrag();
+        moveDirection = GetMoveDirection();
         if (isAttacking)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(attackDirection.x, 0.0f, attackDirection.y));
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
+            RotateTowards(new Vector3(attackDirection.x, 0.0f, attackDirection.y), rotationSpeed * 2);
+
         else if (moveDirection != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
+            RotateTowards(moveDirection, rotationSpeed);
+
         moveDirection.y -= gravity;
         controller.Move(moveDirection * Time.deltaTime);
     }
@@ -116,7 +131,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         hitbox.SetActive(true);
         attackDirection = mouseCoordinates - characterCoordinates;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
         hitbox.SetActive(false);
         StartCoroutine(AttackCooldownCoroutine());
@@ -125,7 +140,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator AttackCooldownCoroutine()
     {
         isOnCooldown = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(attackCooldown);
         isOnCooldown = false;
     }
 }
