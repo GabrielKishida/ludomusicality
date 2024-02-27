@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float dragCoefficient = 0.02f;
     public float minimumSpeed = 0.5f;
     public float gravity = 20.0f; // Gravity force
-    public Hitbox hitbox;
+    public GameObject hitbox;
 
     private Vector2 currentSpeed = Vector2.zero;
     private CharacterController controller;
@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private InputAction move;
     private InputAction roll;
     private InputAction attack;
+    private bool isAttacking = false;
+    private bool isOnCooldown = false;
 
     private void Awake()
     {
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        hitbox.SetActive(false);
     }
 
     void Update()
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             currentSpeed = currentSpeed - currentSpeed * dragCoefficient;
         }
-        Vector2 moveInput = move.ReadValue<Vector2>();
+        Vector2 moveInput = isAttacking ? Vector2.zero : move.ReadValue<Vector2>();
         if (moveInput != Vector2.zero)
         {
             currentSpeed += moveInput * acceleration;
@@ -86,8 +89,8 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
-
-        if (attack.ReadValue<float>() == 1)
+        bool canAttack = !isAttacking && !isOnCooldown;
+        if (attack.ReadValue<float>() == 1 && canAttack)
         {
             StartCoroutine(AttackCoroutine());
         }
@@ -96,8 +99,18 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator AttackCoroutine()
     {
-        hitbox.hitboxCollider.enabled = true;
-        yield return new WaitForSeconds(1);
-        hitbox.hitboxCollider.enabled = false;
+        isAttacking = true;
+        hitbox.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        isAttacking = false;
+        hitbox.SetActive(false);
+        StartCoroutine(AttackCooldownCoroutine());
+    }
+
+    private IEnumerator AttackCooldownCoroutine()
+    {
+        isOnCooldown = true;
+        yield return new WaitForSeconds(0.5f);
+        isOnCooldown = false;
     }
 }
