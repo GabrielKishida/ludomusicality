@@ -51,5 +51,9 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "ludomusicality.sln"
+    "dotnet.defaultSolution": "ludomusicality.sln",
+    "editor.defaultFormatter": "ms-dotnettools.csdevkit",
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp",
+      },
 }
