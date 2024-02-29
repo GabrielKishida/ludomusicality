@@ -122,7 +122,6 @@ public class PlayerController : MonoBehaviour {
 
     private IEnumerator AttackCooldownCoroutine() {
         isOnCooldown = true;
-
         yield return new WaitForSeconds(attackCooldown);
         isOnCooldown = false;
     }
