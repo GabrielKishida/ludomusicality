@@ -5,7 +5,6 @@ public class Projectile : MonoBehaviour {
     private void OnTriggerEnter(Collider collider) {
         Hurtbox hurtbox = collider.GetComponent<Hurtbox>();
         if (hurtbox != null) {
-
             Destroy(gameObject, 0.0f);
         }
 
