@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyBehaviour : MonoBehaviour {
+public class EnemyBehaviour : BaseCharacter {
 
     public Transform target;  // The target GameObject to follow
     public float aimSpeed;
@@ -29,10 +29,11 @@ public class EnemyBehaviour : MonoBehaviour {
 
     }
 
-    void Update() {
+    protected override void Update() {
         if (!isOnCooldown) {
             StartCoroutine(ShootCoroutine());
         }
         RotateTowardsTarget();
+        base.Update();
     }
 }
