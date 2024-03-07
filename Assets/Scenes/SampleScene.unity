@@ -1300,7 +1300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc02bcf68f9dba54aa0b7a217e026bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
   verticalSpeed: 0
   horizontalSpeed: {x: 0, y: 0}
   maxSpeed: 15
@@ -1310,8 +1309,8 @@ MonoBehaviour:
   rotationSpeed: 1000
   gravity: 20
   damagedTime: 20
-  controller: {fileID: 0}
   shouldRotateOnMovement: 0
+  controller: {fileID: 0}
   target: {fileID: 1027218718}
   aimSpeed: 100000
   projectilePrefab: {fileID: 6002634040425179891, guid: afdc8f30e34400b4c97c4919952d8a82, type: 3}
@@ -1354,6 +1353,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1027218718}
   - component: {fileID: 1027218722}
+  - component: {fileID: 1027218726}
+  - component: {fileID: 1027218725}
   - component: {fileID: 1027218723}
   - component: {fileID: 1027218724}
   m_Layer: 0
@@ -1418,21 +1419,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53efe570cd7d1bb4d9dd9395ca2657ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
-  verticalSpeed: 0
-  horizontalSpeed: {x: 0, y: 0}
-  maxSpeed: 12
-  acceleration: 1
-  dragCoefficient: 0.075
-  minimumSpeed: 0.5
-  rotationSpeed: 1000
-  gravity: 0.2
-  damagedTime: 20
-  controller: {fileID: 0}
-  shouldRotateOnMovement: 1
   attackDuration: 0.2
   attackCooldown: 0.5
   hitbox: {fileID: 2021854751}
+  attackDirection: {x: 0, y: 0}
+  isAttacking: 0
+  isOnCooldown: 0
 --- !u!114 &1027218724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,6 +1437,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 747e70917dcecea46b6b29ce4ea28332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1027218725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027218717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2897eeddf985604bba220a72b19144e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  verticalSpeed: 0
+  horizontalSpeed: {x: 0, y: 0}
+  maxSpeed: 15
+  acceleration: 0.5
+  dragCoefficient: 0.02
+  minimumSpeed: 0.5
+  rotationSpeed: 1000
+  gravity: 5
+  damagedTime: 20
+  shouldRotateOnMovement: 1
+  controller: {fileID: 0}
+--- !u!114 &1027218726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027218717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 233825f6a46371047be447d7fd234812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveController: {fileID: 0}
+  attackController: {fileID: 0}
+  move:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 065b8122-cd03-4813-a043-804335f0cbe6
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  roll:
+    m_Name: Roll
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ebdf9874-0514-4a30-8a0c-d76608a63bbf
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  attack:
+    m_Name: Attack
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1c9ab67f-d619-48de-8b74-dab6bb66ddca
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  mouseDirection:
+    m_Name: Mouse Direction
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0ee8f679-915f-486a-8b2a-336b33e575de
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &1140411159
 GameObject:
   m_ObjectHideFlags: 0

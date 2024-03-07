@@ -1,15 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyBehaviour : BaseCharacter {
+public class EnemyBehaviour : MovementController {
 
-    public Transform target;  // The target GameObject to follow
-    public float aimSpeed;
-    public GameObject projectilePrefab;
-    public Transform firePoint;
-    public float projectileSpeed;
-
-    public float projectileCooldown;
+    [SerializeField] private Transform target;  // The target GameObject to follow
+    [SerializeField] private float aimSpeed;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float projectileSpeed;
+    [SerializeField] private float projectileCooldown;
     private bool isOnCooldown = false;
 
     private void RotateTowardsTarget() {
