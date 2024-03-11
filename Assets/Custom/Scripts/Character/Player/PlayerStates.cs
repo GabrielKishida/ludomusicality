@@ -12,16 +12,16 @@ public abstract class PlayerState : IState {
 	public abstract void Update();
 }
 
-public class IdleState : PlayerState {
-	public IdleState(PlayerManager manager) : base(manager) { }
+public class PlayerIdleState : PlayerState {
+	public PlayerIdleState(PlayerManager manager) : base(manager) { }
 
 	public override void Enter() { }
 	public override void Exit() { }
 	public override void Update() { }
 }
 
-public class MoveState : PlayerState {
-	public MoveState(PlayerManager manager) : base(manager) { }
+public class PlayerMoveState : PlayerState {
+	public PlayerMoveState(PlayerManager manager) : base(manager) { }
 
 	public override void Enter() { }
 	public override void Exit() { }
@@ -31,8 +31,8 @@ public class MoveState : PlayerState {
 	}
 }
 
-public class AttackState : PlayerState {
-	public AttackState(PlayerManager manager) : base(manager) { }
+public class PlayerAttackState : PlayerState {
+	public PlayerAttackState(PlayerManager manager) : base(manager) { }
 
 	public override void Enter() {
 		Vector2 mouseCoordinates = manager.mouseDirection.ReadValue<Vector2>();
@@ -47,8 +47,8 @@ public class AttackState : PlayerState {
 	}
 }
 
-public class HurtState : PlayerState {
-	public HurtState(PlayerManager manager) : base(manager) { }
+public class PlayerHurtState : PlayerState {
+	public PlayerHurtState(PlayerManager manager) : base(manager) { }
 
 	public override void Enter() { }
 	public override void Exit() { }

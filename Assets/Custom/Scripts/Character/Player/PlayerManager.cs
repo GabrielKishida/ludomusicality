@@ -47,10 +47,10 @@ public class PlayerManager : MonoBehaviour {
 		moveController = GetComponent<MovementController>();
 		attackController = GetComponent<PlayerAttackController>();
 
-		idleState = new IdleState(this);
-		moveState = new MoveState(this);
-		attackState = new AttackState(this);
-		hurtState = new HurtState(this);
+		idleState = new PlayerIdleState(this);
+		moveState = new PlayerMoveState(this);
+		attackState = new PlayerAttackState(this);
+		hurtState = new PlayerHurtState(this);
 		playerStateMachine = new StateMachine(idleState);
 	}
 
