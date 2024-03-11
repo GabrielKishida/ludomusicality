@@ -1,37 +1,30 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour {
-
-	[SerializeField] private StateMachine enemyStateMachine;
-
-
-	public MovementController moveController;
+public class EnemyManager : CharacterManager {
 	public EnemyAttackController attackController;
-
 
 	private IState lookState;
 	private IState shootState;
 
-	private void Start() {
-		moveController = GetComponent<MovementController>();
+	protected override void Start() {
+		base.Start();
 		attackController = GetComponent<EnemyAttackController>();
 
 		lookState = new EnemyLookState(this);
 		shootState = new EnemyShootState(this);
-		enemyStateMachine = new StateMachine(lookState);
+		stateMachine = new StateMachine(lookState);
 	}
 
-
-	private void Update() {
-		if (enemyStateMachine.currentState == lookState) {
+	protected override void Update() {
+		if (stateMachine.currentState == lookState) {
 			if (!attackController.isOnCooldown) {
-				enemyStateMachine.TransitionTo(shootState);
+				stateMachine.TransitionTo(shootState);
 			}
 		}
-		else if (enemyStateMachine.currentState == shootState) {
-			enemyStateMachine.TransitionTo(lookState);
+		else if (stateMachine.currentState == shootState) {
+			stateMachine.TransitionTo(lookState);
 		}
-		enemyStateMachine.Update();
+		base.Update();
 	}
 }

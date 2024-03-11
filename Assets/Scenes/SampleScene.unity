@@ -181,7 +181,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &79308686
+--- !u!114 &79308689
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fcd2ac048aad748b2513f8a65f9984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterManager: {fileID: 0}
 --- !u!1 &85865044 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 8dca5595cdaced544b3bca78ca84e8d8, type: 3}
@@ -251,7 +252,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9964996, y: 0.99649537, z: 0.9964958}
   m_Center: {x: 0, y: -0.00000016391277, z: 0}
---- !u!114 &85865053
+--- !u!114 &85865056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -263,6 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fcd2ac048aad748b2513f8a65f9984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterManager: {fileID: 0}
 --- !u!1 &239530324
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +720,7 @@ PrefabInstance:
       addedObject: {fileID: 85865050}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8dca5595cdaced544b3bca78ca84e8d8, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 85865053}
+      addedObject: {fileID: 85865056}
   m_SourcePrefab: {fileID: 100100000, guid: 8dca5595cdaced544b3bca78ca84e8d8, type: 3}
 --- !u!1 &525209251
 GameObject:
@@ -1171,7 +1173,7 @@ PrefabInstance:
       addedObject: {fileID: 79308682}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8dca5595cdaced544b3bca78ca84e8d8, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 79308686}
+      addedObject: {fileID: 79308689}
   m_SourcePrefab: {fileID: 100100000, guid: 8dca5595cdaced544b3bca78ca84e8d8, type: 3}
 --- !u!1 &909153607
 GameObject:
@@ -1335,7 +1337,7 @@ MonoBehaviour:
   dragCoefficient: 0.02
   minimumSpeed: 0.5
   rotationSpeed: 1000
-  gravity: 5
+  gravity: 0.1
   damagedTime: 20
   shouldRotateOnMovement: 1
   controller: {fileID: 0}
@@ -1353,7 +1355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 632011281}
   projectilePrefab: {fileID: 6002634040425179891, guid: afdc8f30e34400b4c97c4919952d8a82, type: 3}
-  projectileSpeed: 5
+  projectileSpeed: 30
   projectileCooldown: 2
   target: {fileID: 1027218718}
   isOnCooldown: 0
@@ -1369,6 +1371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fcd2ac048aad748b2513f8a65f9984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterManager: {fileID: 0}
 --- !u!1 &1027218717
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,7 +1473,7 @@ MonoBehaviour:
   dragCoefficient: 0.02
   minimumSpeed: 0.5
   rotationSpeed: 1000
-  gravity: 5
+  gravity: 1
   damagedTime: 20
   shouldRotateOnMovement: 1
   controller: {fileID: 0}
@@ -1536,6 +1539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fcd2ac048aad748b2513f8a65f9984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterManager: {fileID: 0}
 --- !u!1 &1140411159
 GameObject:
   m_ObjectHideFlags: 0
@@ -1944,6 +1948,7 @@ GameObject:
   - component: {fileID: 2021854755}
   - component: {fileID: 2021854754}
   - component: {fileID: 2021854753}
+  - component: {fileID: 2021854756}
   m_Layer: 0
   m_Name: HitboxCollider
   m_TagString: PlayerAttack
@@ -2037,6 +2042,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2021854751}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2021854756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021854751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130953c3c76f31a44bcd0177d5660ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackForce: 5
+  damage: 1
 --- !u!1 &2135395285
 GameObject:
   m_ObjectHideFlags: 0

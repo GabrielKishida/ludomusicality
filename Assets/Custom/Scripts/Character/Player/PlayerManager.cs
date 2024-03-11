@@ -1,12 +1,7 @@
-using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerManager : MonoBehaviour {
-	[SerializeField] private StateMachine playerStateMachine;
-
-	public MovementController moveController;
+public class PlayerManager : CharacterManager {
 	public PlayerAttackController attackController;
 
 	private PlayerInputActions playerControls;
@@ -19,6 +14,10 @@ public class PlayerManager : MonoBehaviour {
 	private IState moveState;
 	private IState attackState;
 	private IState hurtState;
+
+	public override void OnHurtboxHit(float damage, Vector3 knockback) {
+		base.OnHurtboxHit(damage, knockback);
+	}
 
 	private void Awake() {
 		playerControls = new PlayerInputActions();
@@ -43,15 +42,15 @@ public class PlayerManager : MonoBehaviour {
 		mouseDirection.Disable();
 	}
 
-	protected void Start() {
-		moveController = GetComponent<MovementController>();
+	protected override void Start() {
+		base.Start();
 		attackController = GetComponent<PlayerAttackController>();
 
 		idleState = new PlayerIdleState(this);
 		moveState = new PlayerMoveState(this);
 		attackState = new PlayerAttackState(this);
 		hurtState = new PlayerHurtState(this);
-		playerStateMachine = new StateMachine(idleState);
+		stateMachine = new StateMachine(idleState);
 	}
 
 	private bool ShouldAttack() {
@@ -71,21 +70,21 @@ public class PlayerManager : MonoBehaviour {
 		return !attackController.isAttacking;
 	}
 
-	protected void Update() {
-		if (playerStateMachine.currentState == idleState) {
-			if (ShouldAttack()) { playerStateMachine.TransitionTo(attackState); }
-			else if (ShouldMove()) { playerStateMachine.TransitionTo(moveState); }
+	protected override void Update() {
+		if (stateMachine.currentState == idleState) {
+			if (ShouldAttack()) { stateMachine.TransitionTo(attackState); }
+			else if (ShouldMove()) { stateMachine.TransitionTo(moveState); }
 		}
-		else if (playerStateMachine.currentState == moveState) {
-			if (ShouldAttack()) { playerStateMachine.TransitionTo(attackState); }
-			if (ShouldIdle()) { playerStateMachine.TransitionTo(idleState); }
+		else if (stateMachine.currentState == moveState) {
+			if (ShouldAttack()) { stateMachine.TransitionTo(attackState); }
+			if (ShouldIdle()) { stateMachine.TransitionTo(idleState); }
 		}
-		else if (playerStateMachine.currentState == attackState) {
-			if (ShouldEndAttack()) { playerStateMachine.TransitionTo(idleState); }
+		else if (stateMachine.currentState == attackState) {
+			if (ShouldEndAttack()) { stateMachine.TransitionTo(idleState); }
 		}
-		else if (playerStateMachine.currentState == hurtState) {
+		else if (stateMachine.currentState == hurtState) {
 
 		}
-		playerStateMachine.Update();
+		base.Update();
 	}
 }

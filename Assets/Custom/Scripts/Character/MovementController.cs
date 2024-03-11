@@ -16,6 +16,11 @@ public class MovementController : MonoBehaviour {
 
 	[SerializeField] protected CharacterController controller;
 
+	public void ReceiveKnockback(Vector3 knockBack) {
+		horizontalSpeed = new Vector2(horizontalSpeed.x + knockBack.x, horizontalSpeed.y + knockBack.z);
+		verticalSpeed += knockBack.y;
+	}
+
 	public void MoveCharacter(Vector2 moveDirection) {
 		if (moveDirection != Vector2.zero) {
 			if (shouldRotateOnMovement)
