@@ -1337,7 +1337,7 @@ MonoBehaviour:
   dragCoefficient: 0.02
   minimumSpeed: 0.5
   rotationSpeed: 1000
-  gravity: 0.1
+  gravity: 0.2
   damagedTime: 20
   shouldRotateOnMovement: 1
   controller: {fileID: 0}
@@ -1473,7 +1473,7 @@ MonoBehaviour:
   dragCoefficient: 0.02
   minimumSpeed: 0.5
   rotationSpeed: 1000
-  gravity: 1
+  gravity: 0.2
   damagedTime: 20
   shouldRotateOnMovement: 1
   controller: {fileID: 0}
