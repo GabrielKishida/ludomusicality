@@ -7,8 +7,8 @@ public class Healthbar : MonoBehaviour {
 	public Color damagedColor;
 	public Image[] hpCounter;
 
-	private int maxHp;
-	private int currentHp;
+	private float maxHp;
+	private float currentHp;
 
 	void Start() {
 		maxHp = hpCounter.Length;
@@ -21,7 +21,7 @@ public class Healthbar : MonoBehaviour {
 		}
 	}
 
-	public void TakeDamage(int damage) {
+	public void TakeDamage(float damage) {
 		currentHp -= damage;
 		UpdateImage();
 	}

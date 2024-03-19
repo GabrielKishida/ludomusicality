@@ -33,3 +33,17 @@ public class EnemyShootState : EnemyState {
 
 	}
 }
+
+public class EnemyDeathState : EnemyState {
+	public EnemyDeathState(EnemyManager manager) : base(manager) { }
+
+	public override void Enter() {
+		manager.deathController.Die();
+	}
+	public override void Exit() { }
+	public override void Update() {
+		Vector3 rotationAxis = new Vector3(1.0f, 1.0f, 1.0f).normalized;
+		manager.transform.Rotate(rotationAxis * manager.moveController.rotationSpeed * Time.deltaTime);
+
+	}
+}

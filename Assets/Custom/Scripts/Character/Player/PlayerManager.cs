@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : CharacterManager {
 	public PlayerAttackController attackController;
+	[SerializeField] private Healthbar health;
 
 	private PlayerInputActions playerControls;
 	public InputAction move;
@@ -16,6 +17,7 @@ public class PlayerManager : CharacterManager {
 	private IState hurtState;
 
 	public override void OnHurtboxHit(float damage, Vector3 knockback) {
+		health.TakeDamage(damage);
 		base.OnHurtboxHit(damage, knockback);
 	}
 

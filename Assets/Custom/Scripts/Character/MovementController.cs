@@ -8,13 +8,15 @@ public class MovementController : MonoBehaviour {
 	[SerializeField] protected Vector2 horizontalSpeed;
 
 	[Header("Speed Variables")]
-	[SerializeField] protected float maxSpeed = 15.0f;
-	[SerializeField] protected float acceleration = 0.5f;
-	[SerializeField] protected float dragCoefficient = 0.02f;
-	[SerializeField] protected float minimumSpeed = 0.5f;
-	[SerializeField] protected float rotationSpeed = 1000f;
-	[SerializeField] protected float gravity = 5.0f;
-	[SerializeField] bool shouldRotateOnMovement = true;
+	[SerializeField] public float maxSpeed = 15.0f;
+	[SerializeField] public bool shouldRotateOnMovement = true;
+	[SerializeField] public float rotationSpeed = 1000f;
+	[SerializeField] public float gravity = 5.0f;
+
+	[SerializeField] private float acceleration = 0.5f;
+	[SerializeField] private float dragCoefficient = 0.02f;
+	[SerializeField] private float minimumSpeed = 0.5f;
+
 
 	[Header("Slope Handling")]
 	[SerializeField] private float slopeHeightLimit = 1.0f;
