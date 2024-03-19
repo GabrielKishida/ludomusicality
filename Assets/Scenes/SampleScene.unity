@@ -162,7 +162,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 79308679}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -212,7 +212,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 85865044}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -749,13 +749,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 525209251}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.20356409, w: 0.9790616}
-  m_LocalPosition: {x: -8.2, y: 1.4, z: -0.69}
+  m_LocalRotation: {x: -0, y: -0, z: -0.31865573, w: 0.94787055}
+  m_LocalPosition: {x: -8.78, y: 1.65, z: 12.19}
   m_LocalScale: {x: 10, y: 0.5, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 659978824}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -23.491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -37.163}
 --- !u!65 &525209253
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1338,8 +1338,8 @@ MonoBehaviour:
   minimumSpeed: 0.5
   rotationSpeed: 1000
   gravity: 0.2
-  damagedTime: 20
   shouldRotateOnMovement: 1
+  slopeHeightLimit: 1
   controller: {fileID: 0}
 --- !u!114 &1014083104
 MonoBehaviour:
@@ -1474,8 +1474,8 @@ MonoBehaviour:
   minimumSpeed: 0.5
   rotationSpeed: 1000
   gravity: 0.2
-  damagedTime: 20
   shouldRotateOnMovement: 1
+  slopeHeightLimit: 1
   controller: {fileID: 0}
 --- !u!114 &1027218726
 MonoBehaviour:
@@ -1734,7 +1734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c89a73caf26194948b5a891401eaf18e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.66
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c89a73caf26194948b5a891401eaf18e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1742,7 +1742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c89a73caf26194948b5a891401eaf18e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 10.88
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c89a73caf26194948b5a891401eaf18e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2054,7 +2054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130953c3c76f31a44bcd0177d5660ce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackForce: 5
+  knockbackForce: 20
   damage: 1
 --- !u!1 &2135395285
 GameObject:

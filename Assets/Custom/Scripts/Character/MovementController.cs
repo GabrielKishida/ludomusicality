@@ -3,16 +3,22 @@ using UnityEngine;
 
 
 public class MovementController : MonoBehaviour {
+	[Header("Speed")]
 	[SerializeField] protected float verticalSpeed;
 	[SerializeField] protected Vector2 horizontalSpeed;
+
+	[Header("Speed Variables")]
 	[SerializeField] protected float maxSpeed = 15.0f;
 	[SerializeField] protected float acceleration = 0.5f;
 	[SerializeField] protected float dragCoefficient = 0.02f;
 	[SerializeField] protected float minimumSpeed = 0.5f;
 	[SerializeField] protected float rotationSpeed = 1000f;
 	[SerializeField] protected float gravity = 5.0f;
-	[SerializeField] protected float damagedTime = 20.0f;
 	[SerializeField] bool shouldRotateOnMovement = true;
+
+	[Header("Slope Handling")]
+	[SerializeField] private float slopeHeightLimit = 1.0f;
+	private RaycastHit slopeHit;
 
 	[SerializeField] protected CharacterController controller;
 
@@ -36,6 +42,14 @@ public class MovementController : MonoBehaviour {
 		}
 	}
 
+	protected bool IsOnSlope() {
+		if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, slopeHeightLimit)) {
+			float slopeAngle = Vector3.Angle(slopeHit.normal, Vector3.up);
+			return slopeAngle < controller.slopeLimit && slopeAngle != 0;
+		}
+		return false;
+	}
+
 	protected void ApplyDrag() {
 		if (horizontalSpeed.magnitude < minimumSpeed) {
 			horizontalSpeed = Vector2.zero;
@@ -46,15 +60,25 @@ public class MovementController : MonoBehaviour {
 	}
 
 	public void MovementUpdate() {
-		if (controller.isGrounded) {
+		if (controller.isGrounded || IsOnSlope()) {
+			ApplyDrag();
 			verticalSpeed = 0.0f;
 		}
 		else {
 			verticalSpeed -= gravity;
 		}
-		ApplyDrag();
-		Vector3 velocity = new Vector3(horizontalSpeed.x, verticalSpeed, horizontalSpeed.y);
-		controller.Move(velocity * Time.deltaTime);
+		Vector3 verticalVelocity = Vector3.up * verticalSpeed;
+
+		Vector3 horizontalVelocity = new Vector3(horizontalSpeed.x, 0, horizontalSpeed.y);
+		if (IsOnSlope()) {
+			Vector3 adjustedHorizontalVelocity = Vector3.ProjectOnPlane(horizontalVelocity, slopeHit.normal);
+			verticalSpeed += adjustedHorizontalVelocity.y;
+			controller.Move((adjustedHorizontalVelocity + verticalVelocity) * Time.deltaTime);
+		}
+		else {
+			controller.Move((horizontalVelocity + verticalVelocity) * Time.deltaTime);
+		}
+
 	}
 
 	public void RotateTowards(Vector3 direction) {
