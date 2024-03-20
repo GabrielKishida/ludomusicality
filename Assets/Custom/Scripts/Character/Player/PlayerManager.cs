@@ -1,25 +1,24 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerManager : CharacterManager {
 	public PlayerAttackController attackController;
-	[SerializeField] private Healthbar health;
+	[SerializeField] private Healthbar healthBar;
 
 	private PlayerInputActions playerControls;
-	public InputAction move;
-	public InputAction roll;
-	public InputAction attack;
-	public InputAction mouseDirection;
+	[HideInInspector] public InputAction move;
+	[HideInInspector] public InputAction roll;
+	[HideInInspector] public InputAction attack;
+	[HideInInspector] public InputAction mouseDirection;
 
-	private IState idleState;
-	private IState moveState;
-	private IState attackState;
-	private IState hurtState;
+	public PlayerIdleState idleState;
+	public PlayerMoveState moveState;
+	public PlayerAttackState attackState;
+	public PlayerHurtState hurtState;
 
-	public override void OnHurtboxHit(float damage, Vector3 knockback) {
-		health.TakeDamage(damage);
-		base.OnHurtboxHit(damage, knockback);
-	}
+	[Header("State Machine Variables")]
+	[SerializeField] private float hurtStateTimeout = 1.0f;
 
 	private void Awake() {
 		playerControls = new PlayerInputActions();
@@ -44,49 +43,24 @@ public class PlayerManager : CharacterManager {
 		mouseDirection.Disable();
 	}
 
-	protected override void Start() {
-		base.Start();
-		attackController = GetComponent<PlayerAttackController>();
-
+	private void SetupStateMachine() {
 		idleState = new PlayerIdleState(this);
 		moveState = new PlayerMoveState(this);
 		attackState = new PlayerAttackState(this);
-		hurtState = new PlayerHurtState(this);
+		hurtState = new PlayerHurtState(this, hurtStateTimeout);
+
 		stateMachine = new StateMachine(idleState);
 	}
 
-	private bool ShouldAttack() {
-		bool canAttack = !attackController.isAttacking && !attackController.isOnCooldown;
-		return canAttack && attack.ReadValue<float>() == 1; ;
+	protected override void Start() {
+		base.Start();
+		attackController = GetComponent<PlayerAttackController>();
+		SetupStateMachine();
+
 	}
-
-	private bool ShouldMove() {
-		return !attackController.isAttacking && move.ReadValue<Vector2>() != Vector2.zero;
-	}
-
-	private bool ShouldIdle() {
-		return !attackController.isAttacking && move.ReadValue<Vector2>() == Vector2.zero;
-	}
-
-	private bool ShouldEndAttack() {
-		return !attackController.isAttacking;
-	}
-
-	protected override void Update() {
-		if (stateMachine.currentState == idleState) {
-			if (ShouldAttack()) { stateMachine.TransitionTo(attackState); }
-			else if (ShouldMove()) { stateMachine.TransitionTo(moveState); }
-		}
-		else if (stateMachine.currentState == moveState) {
-			if (ShouldAttack()) { stateMachine.TransitionTo(attackState); }
-			if (ShouldIdle()) { stateMachine.TransitionTo(idleState); }
-		}
-		else if (stateMachine.currentState == attackState) {
-			if (ShouldEndAttack()) { stateMachine.TransitionTo(idleState); }
-		}
-		else if (stateMachine.currentState == hurtState) {
-
-		}
-		base.Update();
+	public override void OnHurtboxHit(float damage, Vector3 knockback) {
+		healthBar.TakeDamage(damage);
+		stateMachine.TransitionTo(hurtState);
+		base.OnHurtboxHit(damage, knockback);
 	}
 }

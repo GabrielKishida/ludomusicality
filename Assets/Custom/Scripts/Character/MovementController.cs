@@ -17,12 +17,28 @@ public class MovementController : MonoBehaviour {
 	[SerializeField] private float dragCoefficient = 0.02f;
 	[SerializeField] private float minimumSpeed = 0.5f;
 
+	[SerializeField] private float accelerationFactor = 1.0f;
+
 
 	[Header("Slope Handling")]
 	[SerializeField] private float slopeHeightLimit = 1.0f;
 	private RaycastHit slopeHit;
 
 	[SerializeField] protected CharacterController controller;
+
+	public void SetAccelerationNormal() {
+		accelerationFactor = 1.0f;
+	}
+
+	public void SetAccelerationSlow() {
+		accelerationFactor = 0.1f;
+	}
+
+	public void SetAccelerationFast() {
+		accelerationFactor = 1.5f;
+	}
+
+
 
 	public void ReceiveKnockback(Vector3 knockBack) {
 		horizontalSpeed = new Vector2(horizontalSpeed.x + knockBack.x, horizontalSpeed.y + knockBack.z);
@@ -34,7 +50,7 @@ public class MovementController : MonoBehaviour {
 			if (shouldRotateOnMovement)
 				RotateTowards(new Vector3(moveDirection.x, 0.0f, moveDirection.y));
 
-			Vector3 newHorizontalSpeed = horizontalSpeed + moveDirection.normalized * acceleration;
+			Vector3 newHorizontalSpeed = horizontalSpeed + moveDirection.normalized * acceleration * accelerationFactor;
 			if (newHorizontalSpeed.magnitude > horizontalSpeed.magnitude) {
 				horizontalSpeed = Vector3.ClampMagnitude(newHorizontalSpeed, maxSpeed);
 			}

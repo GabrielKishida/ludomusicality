@@ -1290,11 +1290,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc02bcf68f9dba54aa0b7a217e026bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateMachine:
+    timeInState: 0
   moveController: {fileID: 0}
   attackController: {fileID: 0}
-  deathController: {fileID: 0}
   maxHealth: 3
   currentHealth: 3
+  timeToDespawn: 1
 --- !u!143 &1014083102
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1342,6 +1344,7 @@ MonoBehaviour:
   acceleration: 0.5
   dragCoefficient: 0.02
   minimumSpeed: 0.5
+  accelerationFactor: 1
   slopeHeightLimit: 1
   controller: {fileID: 0}
 --- !u!114 &1014083104
@@ -1375,19 +1378,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 0}
---- !u!114 &1014083110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014083089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f3e60a42708a334d9ed0b9d8395ed45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToDespawn: 1
 --- !u!1 &1027218717
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1481,7 @@ MonoBehaviour:
   acceleration: 0.5
   dragCoefficient: 0.02
   minimumSpeed: 0.5
+  accelerationFactor: 1
   slopeHeightLimit: 1
   controller: {fileID: 1027218722}
 --- !u!114 &1027218726
@@ -1505,9 +1496,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233825f6a46371047be447d7fd234812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateMachine:
+    timeInState: 0
   moveController: {fileID: 1027218725}
   attackController: {fileID: 1027218723}
-  health: {fileID: 2135395287}
+  healthBar: {fileID: 2135395287}
   move:
     m_Name: Move
     m_Type: 0
@@ -1544,6 +1537,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  hurtStateTimeout: 1
 --- !u!114 &1027218727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1818,9 +1812,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: c89a73caf26194948b5a891401eaf18e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1014083107}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: c89a73caf26194948b5a891401eaf18e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1014083110}
   m_SourcePrefab: {fileID: 100100000, guid: c89a73caf26194948b5a891401eaf18e, type: 3}
 --- !u!1 &1468988124
 GameObject:

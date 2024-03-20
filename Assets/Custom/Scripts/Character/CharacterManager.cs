@@ -1,8 +1,7 @@
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour {
-	[SerializeField] protected StateMachine stateMachine;
-
+	public StateMachine stateMachine;
 	public MovementController moveController;
 
 	public virtual void OnHurtboxHit(float damage, Vector3 knockback) {

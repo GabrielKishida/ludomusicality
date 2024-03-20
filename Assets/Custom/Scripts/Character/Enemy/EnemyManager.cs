@@ -3,26 +3,30 @@ using UnityEngine;
 
 public class EnemyManager : CharacterManager {
 	public EnemyAttackController attackController;
-	public EnemyDeathController deathController;
 
-	private IState lookState;
-	private IState shootState;
-	private IState deathState;
+	public IState lookState;
+	public IState shootState;
+	public IState deathState;
 
 	[Header("Health")]
 	[SerializeField] private float maxHealth;
 	[SerializeField] private float currentHealth;
+
+	[SerializeField] private float timeToDespawn = 1.0f;
 
 	public override void OnHurtboxHit(float damage, Vector3 knockback) {
 		currentHealth -= damage;
 		base.OnHurtboxHit(damage, knockback);
 	}
 
+	public void Die() {
+		Destroy(gameObject, timeToDespawn);
+	}
+
 
 	protected override void Start() {
 		base.Start();
 		attackController = GetComponent<EnemyAttackController>();
-		deathController = GetComponent<EnemyDeathController>();
 
 		lookState = new EnemyLookState(this);
 		shootState = new EnemyShootState(this);
@@ -36,14 +40,6 @@ public class EnemyManager : CharacterManager {
 	protected override void Update() {
 		if (currentHealth <= 0) {
 			stateMachine.TransitionTo(deathState);
-		}
-		else if (stateMachine.currentState == lookState) {
-			if (!attackController.isOnCooldown) {
-				stateMachine.TransitionTo(shootState);
-			}
-		}
-		else if (stateMachine.currentState == shootState) {
-			stateMachine.TransitionTo(lookState);
 		}
 		base.Update();
 	}
