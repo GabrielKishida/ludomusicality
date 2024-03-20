@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerState : IState {
@@ -21,6 +23,10 @@ public class PlayerState : IState {
 	protected bool ShouldEndAttack() {
 		return !manager.attackController.isAttacking;
 	}
+	protected bool ShouldDash() {
+		return manager.roll.ReadValue<float>() == 1 && !manager.dashController.isOnCooldown && manager.moveController.IsGrounded();
+	}
+
 
 	override public void Enter() { }
 	override public void Update() { }
@@ -43,13 +49,18 @@ public class PlayerIdleState : PlayerState {
 
 public class PlayerMoveState : PlayerState {
 
+
 	public PlayerMoveState(PlayerManager manager) : base(manager) { }
 
 	public override void Update() {
 		Vector2 moveInput = manager.move.ReadValue<Vector2>();
 		manager.moveController.MoveCharacter(moveInput);
 		if (ShouldAttack()) { manager.stateMachine.TransitionTo(manager.attackState); }
-		if (ShouldIdle()) { manager.stateMachine.TransitionTo(manager.idleState); }
+		else if (ShouldDash()) {
+			manager.dashController.Dash();
+			manager.stateMachine.TransitionTo(manager.dashState);
+		}
+		else if (ShouldIdle()) { manager.stateMachine.TransitionTo(manager.idleState); }
 	}
 }
 
@@ -83,10 +94,36 @@ public class PlayerHurtState : PlayerState {
 	}
 
 	public override void Enter() {
-		manager.moveController.SetAccelerationSlow();
+		manager.moveController.SetSlowdownSpeed();
 	}
 
 	public override void Exit() {
-		manager.moveController.SetAccelerationNormal();
+		manager.moveController.SetRegularSpeed();
+	}
+}
+
+public class PlayerDashState : PlayerState {
+	private Vector2 dashDirection;
+	public PlayerDashState(PlayerManager manager, float timeout) : base(manager) {
+		timeLimit = timeout;
+		timeoutTransitionState = manager.idleState;
+	}
+
+
+	public override void Enter() {
+		dashDirection = manager.move.ReadValue<Vector2>();
+		if (dashDirection == Vector2.zero) {
+			manager.stateMachine.TransitionTo(manager.idleState);
+		}
+		else {
+			manager.moveController.SetDashSpeed();
+		}
+	}
+	public override void Update() {
+		manager.moveController.MoveCharacter(dashDirection);
+	}
+
+	public override void Exit() {
+		manager.moveController.SetRegularSpeed();
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,7 +9,10 @@ public class MovementController : MonoBehaviour {
 	[SerializeField] protected Vector2 horizontalSpeed;
 
 	[Header("Speed Variables")]
-	[SerializeField] public float maxSpeed = 15.0f;
+	private float regularAccelerationFactor = 1.0f;
+	[SerializeField] private float accelerationFactor = 1.0f;
+	[SerializeField] private float regularMaxSpeed = 15.0f;
+	[SerializeField] public float currentMaxSpeed = 15.0f;
 	[SerializeField] public bool shouldRotateOnMovement = true;
 	[SerializeField] public float rotationSpeed = 1000f;
 	[SerializeField] public float gravity = 5.0f;
@@ -17,8 +21,13 @@ public class MovementController : MonoBehaviour {
 	[SerializeField] private float dragCoefficient = 0.02f;
 	[SerializeField] private float minimumSpeed = 0.5f;
 
-	[SerializeField] private float accelerationFactor = 1.0f;
+	[Header("Slowdown")]
+	[SerializeField] private float slowdownMaxSpeed = 5.0f;
+	[SerializeField] private float slowdownAccelerationFactor = 0.1f;
 
+	[Header("Dash")]
+	[SerializeField] private float dashMaxSpeed = 30.0f;
+	[SerializeField] private float dashAccelerationFactor = 10.0f;
 
 	[Header("Slope Handling")]
 	[SerializeField] private float slopeHeightLimit = 1.0f;
@@ -26,19 +35,24 @@ public class MovementController : MonoBehaviour {
 
 	[SerializeField] protected CharacterController controller;
 
-	public void SetAccelerationNormal() {
-		accelerationFactor = 1.0f;
+	public Boolean IsGrounded() {
+		return controller.isGrounded || IsOnSlope();
 	}
 
-	public void SetAccelerationSlow() {
-		accelerationFactor = 0.1f;
+	public void SetRegularSpeed() {
+		currentMaxSpeed = regularMaxSpeed;
+		accelerationFactor = regularAccelerationFactor;
 	}
 
-	public void SetAccelerationFast() {
-		accelerationFactor = 1.5f;
+	public void SetSlowdownSpeed() {
+		currentMaxSpeed = slowdownMaxSpeed;
+		accelerationFactor = slowdownAccelerationFactor;
 	}
 
-
+	public void SetDashSpeed() {
+		currentMaxSpeed = dashMaxSpeed;
+		accelerationFactor = dashAccelerationFactor;
+	}
 
 	public void ReceiveKnockback(Vector3 knockBack) {
 		horizontalSpeed = new Vector2(horizontalSpeed.x + knockBack.x, horizontalSpeed.y + knockBack.z);
@@ -52,7 +66,7 @@ public class MovementController : MonoBehaviour {
 
 			Vector3 newHorizontalSpeed = horizontalSpeed + moveDirection.normalized * acceleration * accelerationFactor;
 			if (newHorizontalSpeed.magnitude > horizontalSpeed.magnitude) {
-				horizontalSpeed = Vector3.ClampMagnitude(newHorizontalSpeed, maxSpeed);
+				horizontalSpeed = Vector3.ClampMagnitude(newHorizontalSpeed, currentMaxSpeed);
 			}
 			else {
 				horizontalSpeed = newHorizontalSpeed;
