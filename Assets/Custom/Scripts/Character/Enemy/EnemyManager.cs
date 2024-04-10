@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyManager : CharacterManager {
 	public EnemyAttackController attackController;
 
-	public MusicControlller musicController;
+	[SerializeField] private MusicEventScriptableObject enemyAttackEvent;
 
 	public IState lookState;
 	public IState shootState;
@@ -41,7 +41,7 @@ public class EnemyManager : CharacterManager {
 
 		currentHealth = maxHealth;
 
-		musicController.enemyAttack.AddListener(ShootEvent);
+		enemyAttackEvent.musicEvent.AddListener(ShootEvent);
 	}
 
 
