@@ -14,9 +14,12 @@ public class MusicEventScriptableObject : ScriptableObject {
 
 	[SerializeField] public UnityEvent musicEvent;
 
+	private bool reachedEnd = false;
+
 	public void OnEnable() {
 		this.currentStep = 0;
 		eventTimes = ReadEventTimes(timeFileName);
+		reachedEnd = false;
 	}
 
 	float[] ReadEventTimes(string timeFileName) {
@@ -39,19 +42,27 @@ public class MusicEventScriptableObject : ScriptableObject {
 
 	public void UpdateMusicTime(float time) {
 		musicTime = time;
-		if (time > eventTimes[currentStep]) {
+		if (time > eventTimes[currentStep] && !reachedEnd) {
 			musicEvent.Invoke();
 
 			currentStep++;
 			if (currentStep >= eventTimes.Length) {
 				currentStep = 0;
+				reachedEnd = true;
 			}
 		}
 	}
 
 	public bool CheckEventTriggerNearTime() {
-		if (Math.Abs(musicTime - eventTimes[currentStep]) < timeThreshold) { return true; }
-		else if (Math.Abs(musicTime - eventTimes[currentStep - 1]) < timeThreshold) { return true; }
-		return false;
+		bool nearCurrentStep = Math.Abs(musicTime - eventTimes[currentStep]) < timeThreshold;
+		bool nearPreviousStep = false;
+		bool nearNextStep = false;
+		if (currentStep > 0) {
+			nearPreviousStep = Math.Abs(musicTime - eventTimes[currentStep - 1]) < timeThreshold;
+		}
+		else if (currentStep <= eventTimes.Length) {
+			nearNextStep = Math.Abs(musicTime - eventTimes[currentStep + 1]) < timeThreshold;
+		}
+		return nearCurrentStep || nearPreviousStep || nearNextStep;
 	}
 }
