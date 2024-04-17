@@ -9,7 +9,7 @@ public class PlayerState : IState {
 	}
 	protected bool ShouldAttack() {
 		bool canAttack = !manager.attackController.isAttacking && !manager.attackController.isOnCooldown;
-		return canAttack && manager.attack.ReadValue<float>() == 1; ;
+		return canAttack && manager.attack.WasPressedThisFrame();
 	}
 
 	protected bool ShouldMove() {

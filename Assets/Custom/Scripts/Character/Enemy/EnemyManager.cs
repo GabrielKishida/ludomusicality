@@ -4,6 +4,8 @@ using UnityEngine;
 public class EnemyManager : CharacterManager {
 	public EnemyAttackController attackController;
 
+	[SerializeField] private MusicEventScriptableObject enemyAttackEvent;
+
 	public IState lookState;
 	public IState shootState;
 	public IState deathState;
@@ -13,6 +15,10 @@ public class EnemyManager : CharacterManager {
 	[SerializeField] private float currentHealth;
 
 	[SerializeField] private float timeToDespawn = 1.0f;
+
+	public void ShootEvent() {
+		if (currentHealth > 0) { stateMachine.TransitionTo(shootState); }
+	}
 
 	public override void OnHurtboxHit(float damage, Vector3 knockback) {
 		currentHealth -= damage;
@@ -34,6 +40,8 @@ public class EnemyManager : CharacterManager {
 		stateMachine = new StateMachine(lookState);
 
 		currentHealth = maxHealth;
+
+		enemyAttackEvent.musicEvent.AddListener(ShootEvent);
 	}
 
 

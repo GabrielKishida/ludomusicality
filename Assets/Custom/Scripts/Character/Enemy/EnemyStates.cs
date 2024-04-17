@@ -16,9 +16,6 @@ public class EnemyLookState : EnemyState {
 	public override void Exit() { }
 	public override void Update() {
 		manager.moveController.RotateTowards(manager.attackController.target.transform.position - manager.moveController.transform.position);
-		if (!manager.attackController.isOnCooldown) {
-			manager.stateMachine.TransitionTo(manager.shootState);
-		}
 	}
 }
 

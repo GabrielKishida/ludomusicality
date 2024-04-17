@@ -3,9 +3,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerAttackController : MonoBehaviour {
-	[SerializeField] private float attackDuration = 0.2f;
-	[SerializeField] private float attackCooldown = 0.5f;
-	[SerializeField] private GameObject hitbox;
+	[SerializeField] private float smallAttackDuration = 0.2f;
+	[SerializeField] private float smallAttackCooldown = 0.5f;
+
+	[SerializeField] private float largeAttackDuration = 0.1f;
+	[SerializeField] private float largeAttackCooldown = 0.1f;
+	[SerializeField] private MusicEventScriptableObject playerEvent;
+	[SerializeField] private GameObject smallHitbox;
+	[SerializeField] private GameObject largeHitbox;
+
+	[SerializeField] private float timeThreshold;
 
 	public Vector2 attackDirection = Vector2.zero;
 
@@ -13,26 +20,42 @@ public class PlayerAttackController : MonoBehaviour {
 	public bool isOnCooldown = false;
 
 	public void Attack(Vector2 attackDirection) {
-		StartCoroutine(AttackCoroutine(attackDirection));
+		if (playerEvent.CheckEventTriggerNearTime(timeThreshold)) {
+			StartCoroutine(LargeAttackCoroutine(attackDirection));
+		}
+		else {
+			StartCoroutine(SmallAttackCoroutine(attackDirection));
+		}
 	}
 
-	private IEnumerator AttackCoroutine(Vector2 attackDirection) {
+	private IEnumerator SmallAttackCoroutine(Vector2 attackDirection) {
 		this.attackDirection = attackDirection;
 		isAttacking = true;
-		hitbox.SetActive(true);
-		yield return new WaitForSeconds(attackDuration);
+		smallHitbox.SetActive(true);
+		yield return new WaitForSeconds(smallAttackDuration);
 		isAttacking = false;
-		hitbox.SetActive(false);
-		StartCoroutine(AttackCooldownCoroutine());
+		smallHitbox.SetActive(false);
+		StartCoroutine(AttackCooldownCoroutine(smallAttackCooldown));
 	}
 
-	private IEnumerator AttackCooldownCoroutine() {
+	private IEnumerator LargeAttackCoroutine(Vector2 attackDirection) {
+		this.attackDirection = attackDirection;
+		isAttacking = true;
+		largeHitbox.SetActive(true);
+		yield return new WaitForSeconds(largeAttackDuration);
+		isAttacking = false;
+		largeHitbox.SetActive(false);
+		StartCoroutine(AttackCooldownCoroutine(largeAttackCooldown));
+	}
+
+	private IEnumerator AttackCooldownCoroutine(float cooldown) {
 		isOnCooldown = true;
-		yield return new WaitForSeconds(attackCooldown);
+		yield return new WaitForSeconds(cooldown);
 		isOnCooldown = false;
 	}
 
 	private void Start() {
-		hitbox.SetActive(false);
+		smallHitbox.SetActive(false);
+		largeHitbox.SetActive(false);
 	}
 }
