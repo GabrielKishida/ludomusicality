@@ -10,7 +10,6 @@ public class MusicEventScriptableObject : ScriptableObject {
 	[SerializeField] private int currentStep = 0;
 	[SerializeField] private float[] eventTimes;
 	[SerializeField] private float musicTime;
-	[SerializeField] private float timeThreshold;
 
 	[SerializeField] public UnityEvent musicEvent;
 
@@ -42,6 +41,12 @@ public class MusicEventScriptableObject : ScriptableObject {
 
 	public void UpdateMusicTime(float time) {
 		musicTime = time;
+
+		if (time < eventTimes[0] && currentStep > 0) {
+			reachedEnd = false;
+			currentStep = 0;
+		}
+
 		if (time > eventTimes[currentStep] && !reachedEnd) {
 			musicEvent.Invoke();
 
@@ -53,7 +58,7 @@ public class MusicEventScriptableObject : ScriptableObject {
 		}
 	}
 
-	public bool CheckEventTriggerNearTime() {
+	public bool CheckEventTriggerNearTime(float timeThreshold) {
 		bool nearCurrentStep = Math.Abs(musicTime - eventTimes[currentStep]) < timeThreshold;
 		bool nearPreviousStep = false;
 		bool nearNextStep = false;

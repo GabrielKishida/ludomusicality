@@ -1845,6 +1845,7 @@ MonoBehaviour:
   playerEvent: {fileID: 11400000, guid: ee97d8c0baf7d434a859125df3521630, type: 2}
   smallHitbox: {fileID: 2021854751}
   largeHitbox: {fileID: 475715940}
+  timeThreshold: 0.1
   attackDirection: {x: 0, y: 0}
   isAttacking: 0
   isOnCooldown: 0

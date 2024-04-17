@@ -12,13 +12,15 @@ public class PlayerAttackController : MonoBehaviour {
 	[SerializeField] private GameObject smallHitbox;
 	[SerializeField] private GameObject largeHitbox;
 
+	[SerializeField] private float timeThreshold;
+
 	public Vector2 attackDirection = Vector2.zero;
 
 	public bool isAttacking = false;
 	public bool isOnCooldown = false;
 
 	public void Attack(Vector2 attackDirection) {
-		if (playerEvent.CheckEventTriggerNearTime()) {
+		if (playerEvent.CheckEventTriggerNearTime(timeThreshold)) {
 			StartCoroutine(LargeAttackCoroutine(attackDirection));
 		}
 		else {

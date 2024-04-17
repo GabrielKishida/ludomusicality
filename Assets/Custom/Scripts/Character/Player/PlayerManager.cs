@@ -64,8 +64,10 @@ public class PlayerManager : CharacterManager {
 
 	}
 	public override void OnHurtboxHit(float damage, Vector3 knockback) {
-		healthBar.TakeDamage(damage);
-		stateMachine.TransitionTo(hurtState);
-		base.OnHurtboxHit(damage, knockback);
+		if (stateMachine.currentState != hurtState) {
+			healthBar.TakeDamage(damage);
+			stateMachine.TransitionTo(hurtState);
+			base.OnHurtboxHit(damage, knockback);
+		}
 	}
 }

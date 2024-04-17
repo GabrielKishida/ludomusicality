@@ -14,6 +14,7 @@ public class MusicControlller : MonoBehaviour {
 	void Start() {
 		musicSource = GetComponent<AudioSource>();
 		musicSource.clip = musicClip;
+		musicSource.loop = true;
 		musicSource.Play();
 	}
 
