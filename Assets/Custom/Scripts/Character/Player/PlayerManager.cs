@@ -3,16 +3,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerManager : CharacterManager {
-	public PlayerAttackController attackController;
+	[SerializeField] public PlayerAttackEventScriptableObject attackEvent;
+
 	public PlayerDashController dashController;
 
 	[SerializeField] private Healthbar healthBar;
 
 	private PlayerInputActions playerControls;
-	[HideInInspector] public InputAction move;
-	[HideInInspector] public InputAction roll;
-	[HideInInspector] public InputAction attack;
-	[HideInInspector] public InputAction mouseDirection;
+	[HideInInspector] public InputAction moveInput;
+	[HideInInspector] public InputAction rollInput;
+	[HideInInspector] public InputAction attackInput;
+	[HideInInspector] public InputAction mouseDirectionInput;
 
 	public PlayerIdleState idleState;
 	public PlayerMoveState moveState;
@@ -29,22 +30,22 @@ public class PlayerManager : CharacterManager {
 	}
 
 	private void OnEnable() {
-		move = playerControls.Player.Move;
-		roll = playerControls.Player.Roll;
-		attack = playerControls.Player.Attack;
-		mouseDirection = playerControls.Player.MouseDirection;
-		move.Enable();
-		roll.Enable();
-		attack.Enable();
-		mouseDirection.Enable();
+		moveInput = playerControls.Player.Move;
+		rollInput = playerControls.Player.Roll;
+		attackInput = playerControls.Player.Attack;
+		mouseDirectionInput = playerControls.Player.MouseDirection;
+		moveInput.Enable();
+		rollInput.Enable();
+		attackInput.Enable();
+		mouseDirectionInput.Enable();
 
 	}
 
 	private void OnDisable() {
-		move.Disable();
-		roll.Disable();
-		attack.Disable();
-		mouseDirection.Disable();
+		moveInput.Disable();
+		rollInput.Disable();
+		attackInput.Disable();
+		mouseDirectionInput.Disable();
 	}
 
 	private void SetupStateMachine() {
@@ -59,7 +60,6 @@ public class PlayerManager : CharacterManager {
 
 	protected override void Start() {
 		base.Start();
-		attackController = GetComponent<PlayerAttackController>();
 		SetupStateMachine();
 
 	}

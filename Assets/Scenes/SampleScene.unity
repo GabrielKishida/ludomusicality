@@ -1838,6 +1838,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53efe570cd7d1bb4d9dd9395ca2657ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackEventScriptableObject: {fileID: 11400000, guid: 88479ba875171e6478ae998e1f3fdb29, type: 2}
   smallAttackDuration: 0.2
   smallAttackCooldown: 0.5
   largeAttackDuration: 0.1
@@ -1846,9 +1847,6 @@ MonoBehaviour:
   smallHitbox: {fileID: 2021854751}
   largeHitbox: {fileID: 475715940}
   timeThreshold: 0.1
-  attackDirection: {x: 0, y: 0}
-  isAttacking: 0
-  isOnCooldown: 0
 --- !u!114 &1027218725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1893,41 +1891,41 @@ MonoBehaviour:
   stateMachine:
     timeInState: 0
   moveController: {fileID: 1027218725}
-  attackController: {fileID: 1027218723}
+  attackEvent: {fileID: 11400000, guid: 88479ba875171e6478ae998e1f3fdb29, type: 2}
   dashController: {fileID: 1027218728}
   healthBar: {fileID: 2135395287}
-  move:
-    m_Name: Move
+  moveInput:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 065b8122-cd03-4813-a043-804335f0cbe6
+    m_Id: 0ad3d1e9-77cb-4922-b722-75bfa5d1b21a
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  roll:
-    m_Name: Roll
+  rollInput:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: ebdf9874-0514-4a30-8a0c-d76608a63bbf
+    m_Id: a0780c8b-f03e-4b3e-a724-f737ef6cd0d7
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  attack:
-    m_Name: Attack
+  attackInput:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 1c9ab67f-d619-48de-8b74-dab6bb66ddca
+    m_Id: ac81d7c3-2730-4b34-bd2c-ecdea0a747a9
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  mouseDirection:
-    m_Name: Mouse Direction
+  mouseDirectionInput:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 0ee8f679-915f-486a-8b2a-336b33e575de
+    m_Id: 77994fc3-686c-4ed2-a893-73f6be67973b
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
