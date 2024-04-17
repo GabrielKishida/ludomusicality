@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : CharacterManager {
 	public PlayerAttackController attackController;
+	public PlayerDashController dashController;
+
 	[SerializeField] private Healthbar healthBar;
 
 	private PlayerInputActions playerControls;
@@ -16,9 +18,11 @@ public class PlayerManager : CharacterManager {
 	public PlayerMoveState moveState;
 	public PlayerAttackState attackState;
 	public PlayerHurtState hurtState;
+	public PlayerDashState dashState;
 
 	[Header("State Machine Variables")]
 	[SerializeField] private float hurtStateTimeout = 1.0f;
+	[SerializeField] private float dashDuration = 0.1f;
 
 	private void Awake() {
 		playerControls = new PlayerInputActions();
@@ -48,6 +52,7 @@ public class PlayerManager : CharacterManager {
 		moveState = new PlayerMoveState(this);
 		attackState = new PlayerAttackState(this);
 		hurtState = new PlayerHurtState(this, hurtStateTimeout);
+		dashState = new PlayerDashState(this, dashDuration);
 
 		stateMachine = new StateMachine(idleState);
 	}

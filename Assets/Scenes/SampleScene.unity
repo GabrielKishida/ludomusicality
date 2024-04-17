@@ -1337,14 +1337,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   verticalSpeed: 0
   horizontalSpeed: {x: 0, y: 0}
-  maxSpeed: 15
+  accelerationFactor: 1
+  regularMaxSpeed: 15
+  currentMaxSpeed: 15
   shouldRotateOnMovement: 1
   rotationSpeed: 1000
   gravity: 0.2
   acceleration: 0.5
   dragCoefficient: 0.02
   minimumSpeed: 0.5
-  accelerationFactor: 1
+  slowdownMaxSpeed: 5
+  slowdownAccelerationFactor: 0.1
+  dashMaxSpeed: 30
+  dashAccelerationFactor: 10
   slopeHeightLimit: 1
   controller: {fileID: 0}
 --- !u!114 &1014083104
@@ -1392,6 +1397,7 @@ GameObject:
   - component: {fileID: 1027218725}
   - component: {fileID: 1027218723}
   - component: {fileID: 1027218727}
+  - component: {fileID: 1027218728}
   m_Layer: 0
   m_Name: PlayerModel
   m_TagString: Untagged
@@ -1474,14 +1480,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   verticalSpeed: 0
   horizontalSpeed: {x: 0, y: 0}
-  maxSpeed: 15
+  accelerationFactor: 1
+  regularMaxSpeed: 15
+  currentMaxSpeed: 15
   shouldRotateOnMovement: 1
   rotationSpeed: 1000
   gravity: 0.2
   acceleration: 0.5
   dragCoefficient: 0.02
   minimumSpeed: 0.5
-  accelerationFactor: 1
+  slowdownMaxSpeed: 5
+  slowdownAccelerationFactor: 0.1
+  dashMaxSpeed: 45
+  dashAccelerationFactor: 10
   slopeHeightLimit: 1
   controller: {fileID: 1027218722}
 --- !u!114 &1027218726
@@ -1500,6 +1511,7 @@ MonoBehaviour:
     timeInState: 0
   moveController: {fileID: 1027218725}
   attackController: {fileID: 1027218723}
+  dashController: {fileID: 1027218728}
   healthBar: {fileID: 2135395287}
   move:
     m_Name: Move
@@ -1538,6 +1550,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   hurtStateTimeout: 1
+  dashDuration: 0.1
 --- !u!114 &1027218727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1551,6 +1564,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 1027218726}
+--- !u!114 &1027218728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027218717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 254b37ca013655a4bbb9d27829c60260, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashCooldown: 1
+  isOnCooldown: 0
 --- !u!1 &1140411159
 GameObject:
   m_ObjectHideFlags: 0
