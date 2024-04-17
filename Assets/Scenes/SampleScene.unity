@@ -1892,6 +1892,7 @@ MonoBehaviour:
     timeInState: 0
   moveController: {fileID: 1027218725}
   attackEvent: {fileID: 11400000, guid: 88479ba875171e6478ae998e1f3fdb29, type: 2}
+  playerHealth: {fileID: 11400000, guid: 772b23ede040e4c4d855a69aca5a9c9c, type: 2}
   dashController: {fileID: 1027218728}
   healthBar: {fileID: 2135395287}
   moveInput:
@@ -2486,7 +2487,7 @@ GameObject:
   - component: {fileID: 2135395286}
   - component: {fileID: 2135395287}
   m_Layer: 5
-  m_Name: Lifebar
+  m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2536,6 +2537,7 @@ MonoBehaviour:
   - {fileID: 405411392}
   - {fileID: 909153609}
   - {fileID: 265685543}
+  playerHealth: {fileID: 11400000, guid: 772b23ede040e4c4d855a69aca5a9c9c, type: 2}
 --- !u!1001 &7849923076097333337
 PrefabInstance:
   m_ObjectHideFlags: 0

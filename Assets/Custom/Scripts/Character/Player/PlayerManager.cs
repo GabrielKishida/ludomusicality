@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerManager : CharacterManager {
+	[Header("Event Scriptable Objects")]
 	[SerializeField] public PlayerAttackEventScriptableObject attackEvent;
+	[SerializeField] private PlayerHealthEventScriptableObject playerHealth;
 
 	public PlayerDashController dashController;
 
@@ -65,7 +67,7 @@ public class PlayerManager : CharacterManager {
 	}
 	public override void OnHurtboxHit(float damage, Vector3 knockback) {
 		if (stateMachine.currentState != hurtState) {
-			healthBar.TakeDamage(damage);
+			playerHealth.Hurt(damage);
 			stateMachine.TransitionTo(hurtState);
 			base.OnHurtboxHit(damage, knockback);
 		}
