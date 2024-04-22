@@ -13,11 +13,17 @@ public class PlayerHealthEventScriptableObject : ScriptableObject {
 		healthEvent.Invoke(health);
 	}
 
+	public void ResetHealth() {
+		currentHp = maxHp;
+	}
+
 	public void Heal(float healValue) {
-		healthEvent.Invoke(Math.Min(currentHp + healValue, maxHp));
+		currentHp = Math.Min(currentHp + healValue, maxHp);
+		healthEvent.Invoke(Math.Min(currentHp, maxHp));
 	}
 
 	public void Hurt(float damage) {
-		healthEvent.Invoke(Math.Max(currentHp - damage, 0));
+		currentHp = Math.Max(currentHp - damage, 0);
+		healthEvent.Invoke(currentHp);
 	}
 }
