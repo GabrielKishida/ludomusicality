@@ -1,7 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
-
 public class EnemyAttackController : MonoBehaviour {
 	[SerializeField] private Transform firePoint;
 	[SerializeField] private GameObject projectilePrefab;

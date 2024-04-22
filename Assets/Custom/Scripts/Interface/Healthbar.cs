@@ -7,22 +7,15 @@ public class Healthbar : MonoBehaviour {
 	public Color damagedColor;
 	public Image[] hpCounter;
 
-	private float maxHp;
-	private float currentHp;
+	[SerializeField] private PlayerHealthEventScriptableObject playerHealth;
 
-	void Start() {
-		maxHp = hpCounter.Length;
-		currentHp = maxHp;
-	}
-
-	private void UpdateImage() {
-		for (int i = 0; i < maxHp; i++) {
+	private void UpdateImage(float currentHp) {
+		for (int i = 0; i < hpCounter.Length; i++) {
 			hpCounter[i].color = (currentHp > i) ? hpColor : damagedColor;
 		}
 	}
 
-	public void TakeDamage(float damage) {
-		currentHp -= damage;
-		UpdateImage();
+	private void Start() {
+		playerHealth.healthEvent.AddListener(UpdateImage);
 	}
 }

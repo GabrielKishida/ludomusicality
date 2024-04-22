@@ -1,7 +1,5 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-
 
 public class MovementController : MonoBehaviour {
 	[Header("Speed")]
@@ -33,9 +31,10 @@ public class MovementController : MonoBehaviour {
 	[SerializeField] private float slopeHeightLimit = 1.0f;
 	private RaycastHit slopeHit;
 
+	[Header("Character Controller")]
 	[SerializeField] protected CharacterController controller;
 
-	public Boolean IsGrounded() {
+	public bool IsGrounded() {
 		return controller.isGrounded || IsOnSlope();
 	}
 
@@ -92,9 +91,9 @@ public class MovementController : MonoBehaviour {
 	}
 
 	public void MovementUpdate() {
-		if (controller.isGrounded || IsOnSlope()) {
+		if (IsGrounded()) {
 			ApplyDrag();
-			verticalSpeed = 0.0f;
+			verticalSpeed = -gravity;
 		}
 		else {
 			verticalSpeed -= gravity;

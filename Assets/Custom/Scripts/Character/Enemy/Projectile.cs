@@ -13,8 +13,10 @@ public class Projectile : Hitbox {
 	}
 
 	void OnTriggerEnter(Collider collider) {
-		Vector3 knockback = GetKnockbackBySpeed();
-		ApplyKnockback(collider, knockback);
-		Destroy(gameObject, 0.0f);
+		if (collider.tag != "Projectile") {
+			Vector3 knockback = GetKnockbackBySpeed();
+			ApplyKnockback(collider, knockback);
+			Destroy(gameObject, 0.0f);
+		}
 	}
 }
