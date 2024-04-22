@@ -79,9 +79,11 @@ public class PlayerController : MonoBehaviour {
 
 	private void OnHurtboxHit(float damage, Vector3 knockback) {
 		movementController.ReceiveKnockback(knockback);
-		if (stateMachine.currentState != hurtState) {
-			playerHealth.Hurt(damage);
-			stateMachine.TransitionTo(hurtState);
+		if (!hurtState.IsInvulnerable()) {
+			if (stateMachine.currentState != hurtState) {
+				playerHealth.Hurt(damage);
+				stateMachine.TransitionTo(hurtState);
+			}
 		}
 	}
 
