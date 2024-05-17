@@ -124,6 +124,7 @@ public class MovementController : MonoBehaviour {
 
 	protected virtual void Start() {
 		controller = GetComponent<CharacterController>();
+		currentMaxSpeed = regularMaxSpeed;
 	}
 
 	protected virtual void Update() {
