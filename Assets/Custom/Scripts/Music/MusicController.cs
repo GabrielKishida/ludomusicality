@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MusicControlller : MonoBehaviour {
+public class MusicController : MonoBehaviour {
 	public AudioClip musicClip;
 
 	[SerializeField] private AudioSource musicSource;
@@ -20,5 +20,13 @@ public class MusicControlller : MonoBehaviour {
 		musicTime = (float)musicSource.timeSamples / musicSource.clip.frequency;
 		enemyEvent.UpdateMusicTime(musicTime);
 		playerEvent.UpdateMusicTime(musicTime);
+	}
+
+	public void PauseMusic() {
+		musicSource.Pause();
+	}
+
+	public void ResumeMusic() {
+		musicSource.UnPause();
 	}
 }
