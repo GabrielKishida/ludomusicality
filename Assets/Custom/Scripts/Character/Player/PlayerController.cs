@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 		return !attackState.IsAttackOccurring();
 	}
 	protected bool ShouldDash() {
+		Debug.Log(movementController.IsGrounded());
 		return inputManager.IsRollPressed() && !dashState.IsDashOnCooldown() && movementController.IsGrounded();
 	}
 

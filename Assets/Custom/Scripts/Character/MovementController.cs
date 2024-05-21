@@ -13,9 +13,9 @@ public class MovementController : MonoBehaviour {
 	[SerializeField] public float currentMaxSpeed = 15.0f;
 	[SerializeField] public bool shouldRotateOnMovement = true;
 	[SerializeField] public float rotationSpeed = 1000f;
-	[SerializeField] public float gravity = 5.0f;
+	[SerializeField] public float gravity = 100.0f;
 
-	[SerializeField] private float acceleration = 0.5f;
+	[SerializeField] private float acceleration = 100.0f;
 	[SerializeField] private float dragCoefficient = 0.02f;
 	[SerializeField] private float minimumSpeed = 0.5f;
 
@@ -63,7 +63,7 @@ public class MovementController : MonoBehaviour {
 			if (shouldRotateOnMovement)
 				RotateTowards(new Vector3(moveDirection.x, 0.0f, moveDirection.y));
 
-			Vector3 newHorizontalSpeed = horizontalSpeed + moveDirection.normalized * acceleration * accelerationFactor;
+			Vector3 newHorizontalSpeed = horizontalSpeed + moveDirection.normalized * acceleration * accelerationFactor * Time.deltaTime;
 			if (newHorizontalSpeed.magnitude > horizontalSpeed.magnitude) {
 				horizontalSpeed = Vector3.ClampMagnitude(newHorizontalSpeed, currentMaxSpeed);
 			}
@@ -93,17 +93,17 @@ public class MovementController : MonoBehaviour {
 	public void MovementUpdate() {
 		if (IsGrounded()) {
 			ApplyDrag();
-			verticalSpeed = -gravity;
+			verticalSpeed = -1;
 		}
 		else {
-			verticalSpeed -= gravity;
+			verticalSpeed -= gravity * Time.deltaTime;
 		}
 		Vector3 verticalVelocity = Vector3.up * verticalSpeed;
 
 		Vector3 horizontalVelocity = new Vector3(horizontalSpeed.x, 0, horizontalSpeed.y);
 		if (IsOnSlope()) {
 			Vector3 adjustedHorizontalVelocity = Vector3.ProjectOnPlane(horizontalVelocity, slopeHit.normal);
-			verticalSpeed += adjustedHorizontalVelocity.y;
+			verticalSpeed += adjustedHorizontalVelocity.y * Time.deltaTime;
 			controller.Move((adjustedHorizontalVelocity + verticalVelocity) * Time.deltaTime);
 		}
 		else {
