@@ -31,6 +31,8 @@ public class PauseManager : MonoBehaviour {
 		Time.timeScale = 1;
 		isPaused = false;
 		musicController.ResumeMusic();
-
+	}
+	public void CloseGame() {
+		Application.Quit();
 	}
 }
