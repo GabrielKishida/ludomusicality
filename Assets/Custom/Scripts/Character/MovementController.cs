@@ -93,7 +93,7 @@ public class MovementController : MonoBehaviour {
 	public void MovementUpdate() {
 		if (IsGrounded()) {
 			ApplyDrag();
-			verticalSpeed = -1;
+			verticalSpeed = -0.001f;
 		}
 		else {
 			verticalSpeed -= gravity * Time.deltaTime;
