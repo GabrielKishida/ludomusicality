@@ -15,11 +15,13 @@ public class PlayerHurtState : PlayerStateBase {
 
 	public override void Enter() {
 		base.Enter();
+		visualsController.SetPlayerColor(Color.red);
 		movementController.SetSlowdownSpeed();
 	}
 
 	public override void Exit() {
 		base.Exit();
+		visualsController.ResetPlayerColor();
 		movementController.SetRegularSpeed();
 	}
 

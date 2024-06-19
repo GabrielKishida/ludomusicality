@@ -34,6 +34,9 @@ public class MovementController : MonoBehaviour {
 	[Header("Character Controller")]
 	[SerializeField] protected CharacterController controller;
 
+	[Header("KnockBack")]
+	[SerializeField] protected float knockBackFactor = 0.5f;
+
 	public bool IsGrounded() {
 		return controller.isGrounded || IsOnSlope();
 	}
@@ -54,6 +57,7 @@ public class MovementController : MonoBehaviour {
 	}
 
 	public void ReceiveKnockback(Vector3 knockBack) {
+		knockBack = knockBackFactor * knockBack;
 		horizontalSpeed = new Vector2(horizontalSpeed.x + knockBack.x, horizontalSpeed.y + knockBack.z);
 		verticalSpeed += knockBack.y;
 	}

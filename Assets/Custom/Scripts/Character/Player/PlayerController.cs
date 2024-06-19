@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private MovementController movementController;
 	[SerializeField] private PlayerAttackController attackController;
 	[SerializeField] private PlayerInputManager inputManager;
+	[SerializeField] private PlayerVisualsController visualsController;
 	[SerializeField] private Hurtbox hurtbox;
 
 	[Header("State Machine")]
@@ -20,7 +21,6 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private PlayerAttackState attackState;
 	[SerializeField] private PlayerHurtState hurtState;
 	[SerializeField] private PlayerDashState dashState;
-
 	protected bool ShouldAttack() {
 		bool canAttack = !attackState.IsAttackOccurring() && !attackState.IsAttackOnCooldown();
 		return canAttack && inputManager.IsAttackPressed();
@@ -57,16 +57,15 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void Start() {
-		idleState.Setup(movementController, attackController, inputManager);
-		moveState.Setup(movementController, attackController, inputManager);
-		attackState.Setup(movementController, attackController, inputManager);
-		hurtState.Setup(movementController, attackController, inputManager);
-		dashState.Setup(movementController, attackController, inputManager);
+		idleState.Setup(movementController, attackController, inputManager, visualsController);
+		moveState.Setup(movementController, attackController, inputManager, visualsController);
+		attackState.Setup(movementController, attackController, inputManager, visualsController);
+		hurtState.Setup(movementController, attackController, inputManager, visualsController);
+		dashState.Setup(movementController, attackController, inputManager, visualsController);
 
 		stateMachine.Setup(idleState);
 
 		playerHealth.ResetHealth();
-
 		hurtbox.hurtboxHitEvent.AddListener(OnHurtboxHit);
 	}
 
