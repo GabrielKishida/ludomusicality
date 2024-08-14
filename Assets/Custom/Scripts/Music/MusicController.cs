@@ -29,4 +29,9 @@ public class MusicController : MonoBehaviour {
 	public void ResumeMusic() {
 		musicSource.UnPause();
 	}
+
+	public void Reset() {
+		enemyEvent.Reset();
+		playerEvent.Reset();
+	}
 }

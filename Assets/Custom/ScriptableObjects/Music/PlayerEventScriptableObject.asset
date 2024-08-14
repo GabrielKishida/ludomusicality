@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688130ebc1f6bbb41a8aab934f19081f, type: 3}
   m_Name: PlayerEventScriptableObject
   m_EditorClassIdentifier: 
-  timeFileName: snare_times
-  currentStep: 0
+  currentStep: 49
   eventTimes:
+  - 0.6
+  - 1.8
+  - 3
+  - 4.2
   - 5.4
   - 6.6
   - 7.8
@@ -43,8 +46,75 @@ MonoBehaviour:
   - 35.4
   - 36.6
   - 37.8
-  musicTime: 39.552
-  timeThreshold: 0.1
+  - 39
+  - 40.2
+  - 41.4
+  - 42.6
+  - 43.8
+  - 45
+  - 46.2
+  - 47.4
+  - 48.6
+  - 49.8
+  - 51.9
+  - 52.05
+  - 52.2
+  - 52.35
+  - 52.5
+  - 52.65
+  - 53.4
+  - 54.6
+  - 55.8
+  - 57
+  - 58.2
+  - 59.4
+  - 60.6
+  - 61.8
+  - 63
+  - 64.2
+  - 65.4
+  - 66.6
+  - 67.8
+  - 69
+  - 70.2
+  - 71.4
+  - 80.7
+  - 80.85
+  - 81
+  - 81.15
+  - 81.3
+  - 81.45
+  - 82.2
+  - 83.4
+  - 84.6
+  - 85.8
+  - 87
+  - 88.2
+  - 89.4
+  - 90.6
+  - 91.8
+  - 93
+  - 94.2
+  - 95.4
+  - 96.6
+  - 97.8
+  - 99
+  - 100.2
+  - 101.4
+  - 102.6
+  - 103.8
+  - 105
+  - 106.2
+  - 107.4
+  - 108.6
+  - 109.8
+  - 111
+  - 112.2
+  - 113.4
+  - 114.6
+  musicTime: 53.58932
+  timeFile: {fileID: 4900000, guid: 53742b8506c4cfe48aa118cd0baf06eb, type: 3}
   musicEvent:
     m_PersistentCalls:
       m_Calls: []
+  reachedEnd: 0

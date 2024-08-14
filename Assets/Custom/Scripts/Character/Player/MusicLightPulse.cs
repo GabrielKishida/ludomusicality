@@ -14,7 +14,7 @@ public class MusicLightPulse : MonoBehaviour {
 	public void Start() {
 		playerEvent.musicEvent.AddListener(SetLightBright);
 	}
-	void Update() {
+	void FixedUpdate() {
 		pulsingLight.intensity *= 0.95f;
 	}
 }

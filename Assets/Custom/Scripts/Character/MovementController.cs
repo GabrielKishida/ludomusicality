@@ -95,11 +95,7 @@ public class MovementController : MonoBehaviour {
 	}
 
 	public void MovementUpdate() {
-		if (IsGrounded()) {
-			ApplyDrag();
-			verticalSpeed = -0.001f;
-		}
-		else {
+		if (!IsGrounded()) {
 			verticalSpeed -= gravity * Time.deltaTime;
 		}
 		Vector3 verticalVelocity = Vector3.up * verticalSpeed;
@@ -133,5 +129,12 @@ public class MovementController : MonoBehaviour {
 
 	protected virtual void Update() {
 		MovementUpdate();
+	}
+
+	protected virtual void FixedUpdate() {
+		if (IsGrounded()) {
+			ApplyDrag();
+			verticalSpeed = -0.001f;
+		}
 	}
 }

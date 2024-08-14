@@ -3,37 +3,38 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
 using Unity.VisualScripting;
+using System.Globalization;
 
 [CreateAssetMenu(fileName = "MusicEventScriptableObject", menuName = "ScriptableObjects/MusicEvent")]
 public class MusicEventScriptableObject : ScriptableObject {
-	[SerializeField] private string timeFileName;
 	[SerializeField] private int currentStep = 0;
 	[SerializeField] private float[] eventTimes;
 	[SerializeField] private float musicTime;
+	[SerializeField] private TextAsset timeFile;
 
 	[SerializeField] public UnityEvent musicEvent;
 	[SerializeField] public bool reachedEnd;
 
 	public void OnEnable() {
-		this.currentStep = 0;
-		reachedEnd = false;
-		eventTimes = ReadEventTimes(timeFileName);
+		Reset();
+		eventTimes = ReadEventTimes();
 	}
 
-	float[] ReadEventTimes(string timeFileName) {
-		TextAsset textAsset = Resources.Load<TextAsset>(timeFileName);
+	public void Reset() {
+		this.currentStep = 0;
+		reachedEnd = false;
+	}
+
+	float[] ReadEventTimes() {
 		List<float> floatList = new List<float>();
 
-		if (textAsset != null) {
-			string[] lines = textAsset.text.Split('\n');
+		if (timeFile != null) {
+			string[] lines = timeFile.text.Split('\n');
 			foreach (string line in lines) {
-				if (float.TryParse(line, out float number)) {
-					floatList.Add(number / 1000.0f);
+				if (float.TryParse(line, NumberStyles.Float, CultureInfo.InvariantCulture, out float number)) {
+					floatList.Add(number);
 				}
 			}
-		}
-		else {
-			Debug.LogError("Text file " + timeFileName + " not found in Resources folder.");
 		}
 		return floatList.ToArray();
 	}
@@ -48,6 +49,7 @@ public class MusicEventScriptableObject : ScriptableObject {
 		if (time > eventTimes[currentStep] && !reachedEnd) {
 			musicEvent.Invoke();
 			currentStep++;
+
 			if (currentStep >= eventTimes.Length) {
 				currentStep = 0;
 				reachedEnd = true;

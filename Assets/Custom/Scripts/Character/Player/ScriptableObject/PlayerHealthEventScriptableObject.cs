@@ -8,6 +8,7 @@ public class PlayerHealthEventScriptableObject : ScriptableObject {
 	[SerializeField] public float maxHp;
 
 	[SerializeField] public UnityEvent<float> healthEvent;
+	[SerializeField] public UnityEvent deathEvent;
 
 	public void SetHealthTo(float health) {
 		healthEvent.Invoke(health);
@@ -25,5 +26,8 @@ public class PlayerHealthEventScriptableObject : ScriptableObject {
 	public void Hurt(float damage) {
 		currentHp = Math.Max(currentHp - damage, 0);
 		healthEvent.Invoke(currentHp);
+		if (currentHp == 0) {
+			deathEvent.Invoke();
+		}
 	}
 }

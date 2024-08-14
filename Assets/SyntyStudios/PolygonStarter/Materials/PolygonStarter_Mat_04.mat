@@ -125,7 +125,7 @@ Material:
     - _MaxBrightness: 1.5
     - _Metallic: 0
     - _Min: 0
-    - _MinBrightness: 0.3
+    - _MinBrightness: 0.5
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OverlayAmount: 1

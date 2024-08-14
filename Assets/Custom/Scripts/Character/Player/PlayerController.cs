@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	[Header("Event Scriptable Objects")]
-	[SerializeField] private PlayerHealthEventScriptableObject playerHealth;
+	[SerializeField]
+	private PlayerHealthEventScriptableObject playerHealth;
 
 	[Header("External Components")]
 	[SerializeField] private MovementController movementController;
