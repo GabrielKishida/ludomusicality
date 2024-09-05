@@ -8,61 +8,46 @@ public class PlayerController : MonoBehaviour {
 	private PlayerHealthEventScriptableObject playerHealth;
 
 	[Header("External Components")]
-	[SerializeField] private MovementController movementController;
+	[SerializeField] private PlayerMovementController movementController;
 	[SerializeField] private PlayerAttackController attackController;
 	[SerializeField] private PlayerInputManager inputManager;
 	[SerializeField] private PlayerVisualsController visualsController;
+	[SerializeField] private PlayerInteractController interactionController;
 	[SerializeField] private Hurtbox hurtbox;
 
 	[Header("State Machine")]
 	[SerializeField] private StateMachine stateMachine;
 
+
 	[SerializeField] private PlayerIdleState idleState;
 	[SerializeField] private PlayerMoveState moveState;
+	[SerializeField] private PlayerHoldAttackState holdAttackState;
 	[SerializeField] private PlayerAttackState attackState;
 	[SerializeField] private PlayerHurtState hurtState;
 	[SerializeField] private PlayerDashState dashState;
-	protected bool ShouldAttack() {
-		bool canAttack = !attackState.IsAttackOccurring() && !attackState.IsAttackOnCooldown();
-		return canAttack && inputManager.IsAttackPressed();
-	}
+	[SerializeField] private PlayerInteractState interactState;
 
-	protected bool ShouldMove() {
-		return !attackState.IsAttackOccurring() && inputManager.ReadMovement() != Vector2.zero;
-	}
-
-	protected bool ShouldIdle() {
-		return !attackState.IsAttackOccurring() && inputManager.IsMovementNull();
-	}
-
-	protected bool ShouldEndAttack() {
-		return !attackState.IsAttackOccurring();
-	}
-	protected bool ShouldDash() {
-		return inputManager.IsRollPressed() && !dashState.IsDashOnCooldown() && movementController.IsGrounded();
-	}
-
-	private void SelectState() {
-		if (ShouldAttack()) {
-			stateMachine.TransitionTo(attackState);
-		}
-		else if (ShouldDash()) {
-			stateMachine.TransitionTo(dashState);
-		}
-		else if (ShouldMove()) {
-			stateMachine.TransitionTo(moveState);
-		}
-		else {
-			stateMachine.TransitionTo(idleState);
+	private PlayerStateBase GetNextState(int nextStateNum) {
+		switch ((PlayerState)nextStateNum) {
+			case PlayerState.PlayerIdleState: return idleState;
+			case PlayerState.PlayerMoveState: return moveState;
+			case PlayerState.PlayerDashState: return dashState;
+			case PlayerState.PlayerHoldAttackState: return holdAttackState;
+			case PlayerState.PlayerAttackState: return attackState;
+			case PlayerState.PlayerHurtState: return hurtState;
+			case PlayerState.PlayerInteractState: return interactState;
+			default: return idleState;
 		}
 	}
 
 	private void Start() {
-		idleState.Setup(movementController, attackController, inputManager, visualsController);
-		moveState.Setup(movementController, attackController, inputManager, visualsController);
-		attackState.Setup(movementController, attackController, inputManager, visualsController);
-		hurtState.Setup(movementController, attackController, inputManager, visualsController);
-		dashState.Setup(movementController, attackController, inputManager, visualsController);
+		idleState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
+		moveState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
+		holdAttackState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
+		attackState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
+		hurtState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
+		dashState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
+		interactState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 
 		stateMachine.Setup(idleState);
 
@@ -73,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 	private void Update() {
 		stateMachine.Do();
 		if (stateMachine.currentState.isComplete) {
-			SelectState();
+			stateMachine.TransitionTo(GetNextState(stateMachine.currentState.nextStateNum));
 		}
 	}
 

@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c192fa4a20b8e948be502b50467044a, type: 3}
-  m_Name: AttackInstructionEvent
+  m_Script: {fileID: 11500000, guid: 9b9a2d0143d34b64a9211949909542bd, type: 3}
+  m_Name: LerpCubeMoveToA
   m_EditorClassIdentifier: 
-  tagsToCheck:
-  - Player
-  enterAreaEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  exitAreaEvent:
+  invokedEvent:
     m_PersistentCalls:
       m_Calls: []

@@ -7,28 +7,24 @@ public class MovementController : MonoBehaviour {
 	[SerializeField] protected Vector2 horizontalSpeed;
 
 	[Header("Speed Variables")]
-	private float regularAccelerationFactor = 1.0f;
-	[SerializeField] private float accelerationFactor = 1.0f;
-	[SerializeField] private float regularMaxSpeed = 15.0f;
+	protected float regularAccelerationFactor = 1.0f;
+	[SerializeField] protected float accelerationFactor = 1.0f;
+	[SerializeField] protected float regularMaxSpeed = 15.0f;
 	[SerializeField] public float currentMaxSpeed = 15.0f;
 	[SerializeField] public bool shouldRotateOnMovement = true;
 	[SerializeField] public float rotationSpeed = 1000f;
 	[SerializeField] public float gravity = 100.0f;
 
-	[SerializeField] private float acceleration = 100.0f;
-	[SerializeField] private float dragCoefficient = 0.02f;
-	[SerializeField] private float minimumSpeed = 0.5f;
+	[SerializeField] protected float acceleration = 100.0f;
+	[SerializeField] protected float dragCoefficient = 0.02f;
+	[SerializeField] protected float minimumSpeed = 0.5f;
 
 	[Header("Slowdown")]
-	[SerializeField] private float slowdownMaxSpeed = 5.0f;
-	[SerializeField] private float slowdownAccelerationFactor = 0.1f;
-
-	[Header("Dash")]
-	[SerializeField] private float dashMaxSpeed = 30.0f;
-	[SerializeField] private float dashAccelerationFactor = 10.0f;
+	[SerializeField] protected float slowdownMaxSpeed = 5.0f;
+	[SerializeField] protected float slowdownAccelerationFactor = 0.1f;
 
 	[Header("Slope Handling")]
-	[SerializeField] private float slopeHeightLimit = 1.0f;
+	[SerializeField] protected float slopeHeightLimit = 1.0f;
 	private RaycastHit slopeHit;
 
 	[Header("Character Controller")]
@@ -51,10 +47,7 @@ public class MovementController : MonoBehaviour {
 		accelerationFactor = slowdownAccelerationFactor;
 	}
 
-	public void SetDashSpeed() {
-		currentMaxSpeed = dashMaxSpeed;
-		accelerationFactor = dashAccelerationFactor;
-	}
+
 
 	public void ReceiveKnockback(Vector3 knockBack) {
 		knockBack = knockBackFactor * knockBack;
@@ -122,16 +115,16 @@ public class MovementController : MonoBehaviour {
 		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * 2 * Time.deltaTime);
 	}
 
-	protected virtual void Start() {
+	public virtual void Start() {
 		controller = GetComponent<CharacterController>();
 		currentMaxSpeed = regularMaxSpeed;
 	}
 
-	protected virtual void Update() {
+	public virtual void Update() {
 		MovementUpdate();
 	}
 
-	protected virtual void FixedUpdate() {
+	public virtual void FixedUpdate() {
 		if (IsGrounded()) {
 			ApplyDrag();
 			verticalSpeed = -0.001f;

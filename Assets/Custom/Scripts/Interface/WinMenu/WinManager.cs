@@ -6,11 +6,11 @@ public class WinManager : MonoBehaviour {
 	public bool hasWon = false;
 	[SerializeField] private GameObject winMenu;
 	[SerializeField] private MusicController musicController;
-	[SerializeField] private AreaDetectorEvent winEvent;
+	[SerializeField] private EventScriptableObject winEvent;
 
 	private void Start() {
 		winMenu.SetActive(false);
-		winEvent.enterAreaEvent.AddListener(ShowWinScreen);
+		winEvent.AddListener(ShowWinScreen);
 	}
 	public void ShowWinScreen() {
 		winMenu.SetActive(true);

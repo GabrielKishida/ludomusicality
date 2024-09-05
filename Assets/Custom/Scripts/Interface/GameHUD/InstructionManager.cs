@@ -8,7 +8,8 @@ public class InstructionManager : MonoBehaviour {
 	[SerializeField] float fadeDuration = 0.5f;
 	[Serializable]
 	public struct Instruction {
-		public AreaDetectorEvent instructionEvent;
+		public EventScriptableObject showInstructionEvent;
+		public EventScriptableObject hideInstructionEvent;
 		public Image image;
 	}
 
@@ -67,15 +68,15 @@ public class InstructionManager : MonoBehaviour {
 			void hideInstruction() {
 				StartCoroutine(FadeOutCoroutine(instruction));
 			}
-			instruction.instructionEvent.enterAreaEvent.AddListener(showInstruction);
-			instruction.instructionEvent.exitAreaEvent.AddListener(hideInstruction);
+			instruction.showInstructionEvent.AddListener(showInstruction);
+			instruction.hideInstructionEvent.AddListener(hideInstruction);
 		}
 	}
 
 	public void OnDestroy() {
 		foreach (Instruction instruction in instructions) {
-			instruction.instructionEvent.enterAreaEvent.RemoveAllListeners();
-			instruction.instructionEvent.exitAreaEvent.RemoveAllListeners();
+			instruction.showInstructionEvent.OnDestroy();
+			instruction.hideInstructionEvent.OnDestroy();
 		}
 	}
 }

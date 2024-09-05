@@ -3,20 +3,22 @@ using UnityEngine;
 
 namespace Assets.Custom.Scripts.Objects {
 	public class AreaDetector : MonoBehaviour {
-		[SerializeField] private List<AreaDetectorEvent> areaEvents;
+		[SerializeField] private List<string> tagsToCheck;
+		[SerializeField] private List<EventScriptableObject> enterAreaEvents;
+		[SerializeField] private List<EventScriptableObject> exitAreaEvents;
 
 		private void OnTriggerEnter(Collider collider) {
-			foreach (AreaDetectorEvent areaEvent in areaEvents) {
-				if (areaEvent.ContainsTag(collider.tag)) {
-					areaEvent.TriggerEnterFunction(collider);
+			if (tagsToCheck.Contains(collider.tag)) {
+				foreach (EventScriptableObject enterEvent in enterAreaEvents) {
+					enterEvent.Invoke();
 				}
 			}
 		}
 
 		private void OnTriggerExit(Collider collider) {
-			foreach (AreaDetectorEvent areaEvent in areaEvents) {
-				if (areaEvent.ContainsTag(collider.tag)) {
-					areaEvent.TriggerExitFunction(collider);
+			if (tagsToCheck.Contains(collider.tag)) {
+				foreach (EventScriptableObject exitEvent in exitAreaEvents) {
+					exitEvent.Invoke();
 				}
 			}
 		}

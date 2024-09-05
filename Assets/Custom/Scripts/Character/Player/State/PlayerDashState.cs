@@ -3,8 +3,7 @@ using UnityEngine;
 
 
 public class PlayerDashState : PlayerStateBase {
-	[SerializeField] private float dashDuration = 0.1f;
-	[SerializeField] private float dashCooldown = 1.0f;
+
 	[SerializeField] private Vector2 dashDirection;
 	public override void Enter() {
 		base.Enter();
@@ -17,16 +16,13 @@ public class PlayerDashState : PlayerStateBase {
 		base.Exit();
 		visualsController.ResetPlayerColor();
 		movementController.SetRegularSpeed();
+		movementController.ResetDashTimer();
 	}
 
 	public override void Do() {
 		movementController.MoveCharacter(dashDirection);
-		if (timeSinceStart > dashDuration) {
+		if (timeSinceStart > movementController.dashDuration) {
 			isComplete = true;
 		}
-	}
-
-	public bool IsDashOnCooldown() {
-		return timeSinceExit < dashCooldown;
 	}
 }

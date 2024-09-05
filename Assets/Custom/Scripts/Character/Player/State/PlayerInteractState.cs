@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 
-public class PlayerIdleState : PlayerStateBase {
+public class PlayerInteractState : PlayerStateBase {
 
 	private int SelectState() {
 		if (ShouldAttack()) {
@@ -11,9 +11,6 @@ public class PlayerIdleState : PlayerStateBase {
 		else if (ShouldDash()) {
 			return (int)PlayerState.PlayerDashState;
 		}
-		else if (ShouldStartInteract()) {
-			return (int)PlayerState.PlayerInteractState;
-		}
 		else if (ShouldMove()) {
 			return (int)PlayerState.PlayerMoveState;
 		}
@@ -21,8 +18,21 @@ public class PlayerIdleState : PlayerStateBase {
 			return (int)PlayerState.PlayerIdleState;
 		}
 	}
+
+	public override void Enter() {
+		interactionController.SetIsInteracting(true);
+		base.Enter();
+	}
+
+	public override void Exit() {
+		interactionController.SetIsInteracting(false);
+		base.Enter();
+	}
+
 	public override void Do() {
-		nextStateNum = SelectState();
-		isComplete = true;
+		if (!ShouldKeepInteract() || interactionController.RecentlyFinishedInteraction()) {
+			nextStateNum = SelectState();
+			isComplete = true;
+		}
 	}
 }
