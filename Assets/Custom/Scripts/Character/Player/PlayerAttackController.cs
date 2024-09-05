@@ -6,11 +6,14 @@ using UnityEngine.InputSystem;
 public class PlayerAttackController : MonoBehaviour {
 	private enum AttackType { Small, Large }
 
+	[SerializeField] private float timeSinceAttack = 100f;
+
 	[Header("Attack Type Variables")]
 	[SerializeField] private float smallAttackDuration = 0.2f;
 	[SerializeField] private float smallAttackCooldown = 0.5f;
 	[SerializeField] private float largeAttackDuration = 0.1f;
 	[SerializeField] private float largeAttackCooldown = 0.1f;
+	[SerializeField] public float minAttackHoldTime = 0.2f;
 
 	[SerializeField] private AttackType currentAttackType;
 
@@ -23,6 +26,7 @@ public class PlayerAttackController : MonoBehaviour {
 	[SerializeField] private MusicEventScriptableObject playerEvent;
 
 	public void Attack() {
+		timeSinceAttack = 0f;
 		if (playerEvent.CheckEventNearTriggerTime(timeThreshold)) {
 			currentAttackType = AttackType.Large;
 			largeHitbox.SetActive(true);
@@ -46,6 +50,16 @@ public class PlayerAttackController : MonoBehaviour {
 		return currentAttackType == AttackType.Large ? largeAttackDuration : smallAttackDuration;
 	}
 
+	public bool IsAttackOccurring() {
+		return timeSinceAttack < GetAttackDuration();
+	}
+	public bool IsAttackOnCooldown() {
+		return timeSinceAttack < GetAttackCooldown() + GetAttackDuration();
+	}
+
+	private void FixedUpdate() {
+		timeSinceAttack += Time.deltaTime;
+	}
 
 	private void Start() {
 		smallHitbox.SetActive(false);

@@ -22,7 +22,7 @@ public class Hitbox : MonoBehaviour {
 		if (rb != null) {
 			rb.AddForce(knockback, ForceMode.Impulse);
 		}
-		else if (hurtbox != null) {
+		if (hurtbox != null) {
 			hurtbox.OnTakeDamage(damage, knockback);
 		}
 	}

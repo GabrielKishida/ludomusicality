@@ -11,6 +11,7 @@ public class PlayerInputManager : MonoBehaviour {
 	[HideInInspector] public InputAction rollInput;
 	[HideInInspector] public InputAction attackInput;
 	[HideInInspector] public InputAction mouseDirectionInput;
+	[HideInInspector] public InputAction interactInput;
 
 	private void Awake() {
 		playerControls = new PlayerInputActions();
@@ -21,10 +22,12 @@ public class PlayerInputManager : MonoBehaviour {
 		rollInput = playerControls.Player.Roll;
 		attackInput = playerControls.Player.Attack;
 		mouseDirectionInput = playerControls.Player.MouseDirection;
+		interactInput = playerControls.Player.Interact;
 		moveInput.Enable();
 		rollInput.Enable();
 		attackInput.Enable();
 		mouseDirectionInput.Enable();
+		interactInput.Enable();
 
 	}
 
@@ -33,6 +36,7 @@ public class PlayerInputManager : MonoBehaviour {
 		rollInput.Disable();
 		attackInput.Disable();
 		mouseDirectionInput.Disable();
+		interactInput.Disable();
 	}
 
 	public Vector2 ReadMovement() {
@@ -50,10 +54,22 @@ public class PlayerInputManager : MonoBehaviour {
 	}
 
 	public bool IsAttackPressed() {
-		return attackInput.WasPressedThisFrame();
+		return attackInput.IsPressed();
 	}
 
-	public bool IsRollPressed() {
+	public bool IsAttackReleased() {
+		return attackInput.WasReleasedThisFrame();
+	}
+
+	public bool WasRollPressed() {
 		return rollInput.WasPressedThisFrame();
+	}
+
+	public bool WasInteractPressed() {
+		return interactInput.WasPressedThisFrame();
+	}
+
+	public bool IsInteractPressed() {
+		return interactInput.IsPressed();
 	}
 }

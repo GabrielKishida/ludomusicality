@@ -9,6 +9,8 @@ public class State : MonoBehaviour {
 	public float timeSinceStart => Time.time - startTime;
 	public float timeSinceExit => Time.time - exitTime;
 
+	[HideInInspector] public int nextStateNum;
+
 	public virtual void Enter() {
 		startTime = Time.time;
 		isComplete = false;

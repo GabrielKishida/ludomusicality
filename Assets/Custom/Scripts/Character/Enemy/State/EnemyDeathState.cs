@@ -8,7 +8,6 @@ public class EnemyDeathState : EnemyStateBase {
 	[SerializeField] private float timeToDespawn = 1.0f;
 	public override void Enter() {
 		base.Enter();
-		attackController.Shoot();
 		Destroy(movementController.gameObject, timeToDespawn);
 	}
 
