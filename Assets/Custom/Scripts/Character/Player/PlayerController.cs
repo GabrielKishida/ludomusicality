@@ -24,8 +24,36 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private PlayerHoldAttackState holdAttackState;
 	[SerializeField] private PlayerAttackState attackState;
 	[SerializeField] private PlayerHurtState hurtState;
+	[SerializeField] private PlayerLongHurtState longHurtState;
 	[SerializeField] private PlayerDashState dashState;
 	[SerializeField] private PlayerInteractState interactState;
+
+	private static PlayerController _instance;
+
+	public static PlayerController Instance {
+		get {
+			if (_instance == null) {
+				_instance = FindObjectOfType<PlayerController>();
+
+				if (_instance == null) {
+					GameObject singletonObject = new GameObject();
+					_instance = singletonObject.AddComponent<PlayerController>();
+					singletonObject.name = typeof(PlayerController).ToString() + " (Singleton)";
+					DontDestroyOnLoad(singletonObject);
+				}
+			}
+			return _instance;
+		}
+	}
+
+	private void Awake() {
+		if (_instance == null) {
+			_instance = this;
+		}
+		else if (_instance != this) {
+			Destroy(gameObject);
+		}
+	}
 
 	private PlayerStateBase GetNextState(int nextStateNum) {
 		switch ((PlayerState)nextStateNum) {
@@ -46,13 +74,14 @@ public class PlayerController : MonoBehaviour {
 		holdAttackState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		attackState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		hurtState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
+		longHurtState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		dashState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		interactState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 
 		stateMachine.Setup(idleState);
 
 		playerHealth.ResetHealth();
-		hurtbox.hurtboxHitEvent.AddListener(OnHurtboxHit);
+		hurtbox.hurtboxHitEvent.AddListener(HurtPlayer);
 	}
 
 	private void Update() {
@@ -62,14 +91,39 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private void OnHurtboxHit(float damage, Vector3 knockback) {
+	public void HurtPlayer(float damage, Vector3 knockback) {
 		movementController.ReceiveKnockback(knockback);
 		if (!hurtState.IsInvulnerable()) {
 			if (stateMachine.currentState != hurtState) {
 				playerHealth.Hurt(damage);
+				CameraShake.Instance.ApplyCameraShake(damage);
 				stateMachine.TransitionTo(hurtState);
 			}
 		}
+	}
+
+	public void LongHurtPlayer(float damage, Vector3 knockback) {
+		movementController.ReceiveKnockback(knockback);
+		if (!hurtState.IsInvulnerable()) {
+			if (stateMachine.currentState != hurtState) {
+				playerHealth.Hurt(damage);
+				CameraShake.Instance.ApplyCameraShake(damage);
+				stateMachine.TransitionTo(longHurtState);
+			}
+		}
+	}
+
+	public void DisablePlayer() {
+		inputManager.DisablePlayer();
+		movementController.SetHorizontalSpeed(Vector2.zero);
+	}
+
+	public void EnablePlayer() {
+		inputManager.EnablePlayer();
+	}
+
+	public void TeleportPlayer(Vector3 newPosition) {
+		movementController.SetPositionAs(newPosition);
 	}
 
 }

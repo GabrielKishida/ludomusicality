@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public class EventScriptableObject : ScriptableObject {
 	[SerializeField] private UnityEvent invokedEvent;
 
-	public void OnEnable() {
+	virtual public void OnEnable() {
 		if (invokedEvent != null) {
 			invokedEvent = new UnityEvent();
 		}

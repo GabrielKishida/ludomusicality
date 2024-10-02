@@ -148,3 +148,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   knockbackForce: 20
   damage: 1
+  immuneTag: Enemy

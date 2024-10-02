@@ -7,6 +7,7 @@ public enum PlayerState {
 	PlayerHoldAttackState,
 	PlayerAttackState,
 	PlayerHurtState,
+	PlayerLongHurtState,
 	PlayerInteractState,
 }
 public class PlayerStateBase : State {
@@ -37,14 +38,14 @@ public class PlayerStateBase : State {
 	}
 
 	protected bool ShouldIdle() {
-		return !attackController.IsAttackOccurring() && inputManager.IsMovementNull();
+		return !attackController.IsAttackOccurring() && inputManager.IsMovementZero();
 	}
 
 	protected bool ShouldEndAttack() {
 		return !attackController.IsAttackOccurring();
 	}
 	protected bool ShouldDash() {
-		return inputManager.WasRollPressed() && !movementController.IsDashOnCooldown() && movementController.IsGrounded();
+		return inputManager.WasRollPressed() && !movementController.IsDashOnCooldown() && movementController.IsGroundedWithBuffer();
 	}
 
 	protected bool ShouldStartInteract() {

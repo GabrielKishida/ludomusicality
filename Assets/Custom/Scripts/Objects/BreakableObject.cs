@@ -50,14 +50,12 @@ public class BreakableObject : MonoBehaviour {
 	}
 
 	private IEnumerator DespawnCoroutine() {
-		Vector3 initialScale = transform.localScale;
+		Vector3 initialScale = Vector3.one;
 		float elapsedTime = 0f;
 
 		yield return new WaitForSeconds(timeToStartDespawn);
 
 		while (elapsedTime < despawnDuration) {
-
-
 			float percentageComplete = elapsedTime / despawnDuration;
 			float smoothStep = Mathf.SmoothStep(0f, 1f, percentageComplete);
 			Vector3 newScale = Vector3.Lerp(initialScale, Vector3.zero, smoothStep);

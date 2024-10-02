@@ -47,7 +47,13 @@ public class MovementController : MonoBehaviour {
 		accelerationFactor = slowdownAccelerationFactor;
 	}
 
+	public void SetHorizontalSpeed(Vector2 newHorizontalSpeed) {
+		horizontalSpeed = newHorizontalSpeed;
+	}
 
+	public void SetVerticalSpeed(float newVerticalSpeed) {
+		verticalSpeed = newVerticalSpeed;
+	}
 
 	public void ReceiveKnockback(Vector3 knockBack) {
 		knockBack = knockBackFactor * knockBack;
@@ -103,6 +109,12 @@ public class MovementController : MonoBehaviour {
 			controller.Move((horizontalVelocity + verticalVelocity) * Time.deltaTime);
 		}
 
+	}
+
+	public void SetPositionAs(Vector3 position) {
+		controller.enabled = false;
+		transform.position = position;
+		controller.enabled = true;
 	}
 
 	public void RotateTowards(Vector3 direction) {

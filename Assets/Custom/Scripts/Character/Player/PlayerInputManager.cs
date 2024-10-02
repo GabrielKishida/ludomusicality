@@ -7,11 +7,13 @@ public class PlayerInputManager : MonoBehaviour {
 	[SerializeField] private Transform playerTransform;
 
 	private PlayerInputActions playerControls;
-	[HideInInspector] public InputAction moveInput;
-	[HideInInspector] public InputAction rollInput;
-	[HideInInspector] public InputAction attackInput;
-	[HideInInspector] public InputAction mouseDirectionInput;
-	[HideInInspector] public InputAction interactInput;
+	[HideInInspector] private InputAction moveInput;
+	[HideInInspector] private InputAction rollInput;
+	[HideInInspector] private InputAction attackInput;
+	[HideInInspector] private InputAction mouseDirectionInput;
+	[HideInInspector] private InputAction interactInput;
+
+	[SerializeField] private bool playerEnabled = true;
 
 	private void Awake() {
 		playerControls = new PlayerInputActions();
@@ -38,9 +40,8 @@ public class PlayerInputManager : MonoBehaviour {
 		mouseDirectionInput.Disable();
 		interactInput.Disable();
 	}
-
 	public Vector2 ReadMovement() {
-		return moveInput.ReadValue<Vector2>();
+		return playerEnabled ? moveInput.ReadValue<Vector2>() : Vector2.zero;
 	}
 
 	public Vector2 GetCharacterToMouseDirection() {
@@ -49,27 +50,36 @@ public class PlayerInputManager : MonoBehaviour {
 		return mouseCoordinates - characterCoordinates;
 	}
 
-	public bool IsMovementNull() {
-		return ReadMovement() != null;
+	public bool IsMovementZero() {
+		return ReadMovement() != Vector2.zero;
 	}
 
 	public bool IsAttackPressed() {
-		return attackInput.IsPressed();
+		return playerEnabled ? attackInput.IsPressed() : false;
 	}
 
 	public bool IsAttackReleased() {
-		return attackInput.WasReleasedThisFrame();
+		return playerEnabled ? attackInput.WasReleasedThisFrame() : false;
 	}
 
 	public bool WasRollPressed() {
-		return rollInput.WasPressedThisFrame();
+		return playerEnabled ? rollInput.WasPressedThisFrame() : false;
 	}
 
 	public bool WasInteractPressed() {
-		return interactInput.WasPressedThisFrame();
+		return playerEnabled ? interactInput.WasPressedThisFrame() : false;
 	}
 
 	public bool IsInteractPressed() {
-		return interactInput.IsPressed();
+		return playerEnabled ? interactInput.IsPressed() : false;
 	}
+
+	public void EnablePlayer() {
+		playerEnabled = true;
+	}
+
+	public void DisablePlayer() {
+		playerEnabled = false;
+	}
+
 }

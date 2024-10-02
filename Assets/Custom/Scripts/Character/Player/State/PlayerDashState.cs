@@ -8,20 +8,27 @@ public class PlayerDashState : PlayerStateBase {
 	public override void Enter() {
 		base.Enter();
 		visualsController.SetPlayerColor(Color.gray);
-		movementController.SetDashSpeed();
+		DashType dashType = movementController.StartDash();
 		dashDirection = inputManager.ReadMovement();
+		switch (dashType) {
+			case DashType.HyperDash:
+
+				break;
+			case DashType.RegularDash:
+			default:
+				break;
+		}
 	}
 
 	public override void Exit() {
 		base.Exit();
 		visualsController.ResetPlayerColor();
 		movementController.SetRegularSpeed();
-		movementController.ResetDashTimer();
 	}
 
 	public override void Do() {
 		movementController.MoveCharacter(dashDirection);
-		if (timeSinceStart > movementController.dashDuration) {
+		if (timeSinceStart > movementController.GetCurrentDashDuration()) {
 			isComplete = true;
 		}
 	}

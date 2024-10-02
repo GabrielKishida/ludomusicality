@@ -70,5 +70,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   pixelateShader: {fileID: 4800000, guid: aac7803d3e9c7304f8a915d61a450385, type: 3}
-  screenHeight: 200
+  screenHeight: 512
   renderPassEvent: 550

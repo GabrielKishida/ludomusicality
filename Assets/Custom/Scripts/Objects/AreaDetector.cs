@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Custom.Scripts.Objects {
 	public class AreaDetector : MonoBehaviour {
@@ -7,19 +8,30 @@ namespace Assets.Custom.Scripts.Objects {
 		[SerializeField] private List<EventScriptableObject> enterAreaEvents;
 		[SerializeField] private List<EventScriptableObject> exitAreaEvents;
 
+		public UnityEvent whenEnterEvent;
+		public UnityEvent whenExitEvent;
+
 		private void OnTriggerEnter(Collider collider) {
 			if (tagsToCheck.Contains(collider.tag)) {
-				foreach (EventScriptableObject enterEvent in enterAreaEvents) {
-					enterEvent.Invoke();
+				whenEnterEvent.Invoke();
+				if (enterAreaEvents.Count > 0) {
+					foreach (EventScriptableObject enterEvent in enterAreaEvents) {
+						enterEvent.Invoke();
+					}
 				}
+
 			}
 		}
 
 		private void OnTriggerExit(Collider collider) {
 			if (tagsToCheck.Contains(collider.tag)) {
-				foreach (EventScriptableObject exitEvent in exitAreaEvents) {
-					exitEvent.Invoke();
+				whenExitEvent.Invoke();
+				if (exitAreaEvents.Count > 0) {
+					foreach (EventScriptableObject exitEvent in exitAreaEvents) {
+						exitEvent.Invoke();
+					}
 				}
+
 			}
 		}
 	}
