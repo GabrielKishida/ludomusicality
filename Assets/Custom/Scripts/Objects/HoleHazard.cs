@@ -26,7 +26,7 @@ public class HoleHazard : MonoBehaviour {
 	IEnumerator OnFallCoroutine() {
 		PlayerController.Instance.DisablePlayer();
 		yield return new WaitForSeconds(timeToRespawn);
-		PlayerController.Instance.TeleportPlayer(FindNearestRespawnWaypoint());
+		PlayerController.Instance.TeleportPlayerToSafeSpot();
 		PlayerController.Instance.EnablePlayer();
 		PlayerController.Instance.LongHurtPlayer(hazardDamage, Vector3.zero);
 		yield return null;

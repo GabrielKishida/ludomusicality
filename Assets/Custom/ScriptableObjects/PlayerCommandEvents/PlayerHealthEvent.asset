@@ -17,3 +17,6 @@ MonoBehaviour:
   healthEvent:
     m_PersistentCalls:
       m_Calls: []
+  deathEvent:
+    m_PersistentCalls:
+      m_Calls: []

@@ -17,8 +17,8 @@ namespace Assets.Custom.Scripts.Objects {
 		private bool movingToB = false;
 
 		private void Start() {
-			moveToAEvent.AddListener(MoveToA);
-			moveToBEvent.AddListener(MoveToB);
+			if (moveToAEvent != null) { moveToAEvent.AddListener(MoveToA); }
+			if (moveToBEvent != null) { moveToBEvent.AddListener(MoveToB); }
 		}
 
 		private IEnumerator MoveToACoroutine() {

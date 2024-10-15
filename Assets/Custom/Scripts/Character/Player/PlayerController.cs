@@ -92,9 +92,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void HurtPlayer(float damage, Vector3 knockback) {
-		movementController.ReceiveKnockback(knockback);
-		if (!hurtState.IsInvulnerable()) {
-			if (stateMachine.currentState != hurtState) {
+		if (!hurtState.IsInvulnerable() && !longHurtState.IsInvulnerable()) {
+			if (stateMachine.currentState != hurtState && stateMachine.currentState != longHurtState) {
+				movementController.ReceiveKnockback(knockback);
 				playerHealth.Hurt(damage);
 				CameraShake.Instance.ApplyCameraShake(damage);
 				stateMachine.TransitionTo(hurtState);
@@ -103,9 +103,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void LongHurtPlayer(float damage, Vector3 knockback) {
-		movementController.ReceiveKnockback(knockback);
-		if (!hurtState.IsInvulnerable()) {
-			if (stateMachine.currentState != hurtState) {
+		if (!hurtState.IsInvulnerable() && !longHurtState.IsInvulnerable()) {
+			movementController.ReceiveKnockback(knockback);
+			if (stateMachine.currentState != hurtState && stateMachine.currentState != longHurtState) {
 				playerHealth.Hurt(damage);
 				CameraShake.Instance.ApplyCameraShake(damage);
 				stateMachine.TransitionTo(longHurtState);
@@ -115,15 +115,21 @@ public class PlayerController : MonoBehaviour {
 
 	public void DisablePlayer() {
 		inputManager.DisablePlayer();
+		movementController.shouldCaptureSafeSpot = false;
 		movementController.SetHorizontalSpeed(Vector2.zero);
 	}
 
 	public void EnablePlayer() {
 		inputManager.EnablePlayer();
+		movementController.shouldCaptureSafeSpot = true;
 	}
 
 	public void TeleportPlayer(Vector3 newPosition) {
 		movementController.SetPositionAs(newPosition);
+	}
+
+	public void TeleportPlayerToSafeSpot() {
+		movementController.TeleportToSafeSpot();
 	}
 
 }

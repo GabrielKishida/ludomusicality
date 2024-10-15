@@ -25,10 +25,18 @@ public class CameraShake : MonoBehaviour {
 		}
 	}
 
-	public void Start() {
+	private void InitCamera() {
 		CinemachineVirtualCamera activeCamera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
 		CinemachineBasicMultiChannelPerlin noise = activeCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 		noise.m_AmplitudeGain = 0;
+	}
+
+	public void Start() {
+		InitCamera();
+	}
+
+	public void OnEnable() {
+		InitCamera();
 	}
 
 	public void ApplyCameraShake(float amplitude) {

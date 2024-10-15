@@ -20,6 +20,12 @@ public class PlayerMovementController : MovementController {
 	[SerializeField] private float timeSinceDash = 0f;
 	[SerializeField] private float dashCooldown = 1.0f;
 
+	[Header("Safe Spot")]
+	[SerializeField] public bool shouldCaptureSafeSpot = true;
+	[SerializeField] private float timeSinceSafeSpotUpdate = 0f;
+	[SerializeField] private float safeSpotUpdateCooldown = 0.2f;
+	[SerializeField] private int safeSpotsMaxCount = 5;
+	[SerializeField] private List<Vector3> safeSpots;
 
 	[SerializeField] public float dashDuration = 0.1f;
 
@@ -29,6 +35,10 @@ public class PlayerMovementController : MovementController {
 	[SerializeField] private float timeThreshold;
 	[SerializeField] private MusicEventScriptableObject playerEvent;
 
+	public override void Start() {
+		base.Start();
+		safeSpots.Insert(0, transform.position);
+	}
 	public DashType StartDash() {
 		timeSinceDash = 0f;
 
@@ -57,6 +67,34 @@ public class PlayerMovementController : MovementController {
 		return this.IsGrounded() || timeSinceGrounded < groundedBufferTime;
 	}
 
+	private void AddSafeSpot(Vector3 safeSpot) {
+		safeSpots.Insert(0, safeSpot);
+		if (safeSpots.Count > safeSpotsMaxCount) {
+			safeSpots.RemoveRange(safeSpotsMaxCount, safeSpots.Count - safeSpotsMaxCount);
+		}
+	}
+
+	private void UpdateLastSafeSpot() {
+		if (shouldCaptureSafeSpot) {
+			timeSinceSafeSpotUpdate += Time.deltaTime;
+			if (timeSinceSafeSpotUpdate > safeSpotUpdateCooldown) {
+				timeSinceSafeSpotUpdate = 0f;
+				if (IsGrounded()) {
+					AddSafeSpot(transform.position);
+				}
+			}
+		}
+	}
+
+	public void TeleportToSafeSpot() {
+		if (safeSpots[safeSpotsMaxCount - 1] != null) {
+			SetPositionAs(safeSpots[safeSpotsMaxCount - 1]);
+		}
+		else {
+			SetPositionAs(safeSpots[0]);
+		}
+	}
+
 	override public void FixedUpdate() {
 		base.FixedUpdate();
 		timeSinceDash += Time.deltaTime;
@@ -66,5 +104,6 @@ public class PlayerMovementController : MovementController {
 		else {
 			timeSinceGrounded += Time.deltaTime;
 		}
+		UpdateLastSafeSpot();
 	}
 }
