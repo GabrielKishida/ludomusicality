@@ -4,19 +4,25 @@ using UnityEngine.Events;
 
 namespace Assets.Custom.Scripts.Objects {
 	public class AreaDetector : MonoBehaviour {
+		[SerializeField] private bool triggerEnterOnceOnly = false;
 		[SerializeField] private List<string> tagsToCheck;
 		[SerializeField] private List<EventScriptableObject> enterAreaEvents;
 		[SerializeField] private List<EventScriptableObject> exitAreaEvents;
+
+		private bool hasTriggered = false;
 
 		public UnityEvent whenEnterEvent;
 		public UnityEvent whenExitEvent;
 
 		private void OnTriggerEnter(Collider collider) {
 			if (tagsToCheck.Contains(collider.tag)) {
-				whenEnterEvent.Invoke();
-				if (enterAreaEvents.Count > 0) {
-					foreach (EventScriptableObject enterEvent in enterAreaEvents) {
-						enterEvent.Invoke();
+				if (!(triggerEnterOnceOnly && hasTriggered)) {
+					hasTriggered = true;
+					whenEnterEvent.Invoke();
+					if (enterAreaEvents.Count > 0) {
+						foreach (EventScriptableObject enterEvent in enterAreaEvents) {
+							enterEvent.Invoke();
+						}
 					}
 				}
 

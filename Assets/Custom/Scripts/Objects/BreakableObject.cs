@@ -13,6 +13,8 @@ public class BreakableObject : MonoBehaviour {
 	[SerializeField] private float despawnDuration = 2.0f;
 	[SerializeField] private float timeToStartDespawn = 5.0f;
 
+	[SerializeField] private EventScriptableObject eventWhenBroken;
+
 	private List<GameObject> GetObjectChildren(GameObject parentObject) {
 		List<GameObject> children = new List<GameObject>();
 		foreach (Transform child in parentObject.transform) {
@@ -44,6 +46,9 @@ public class BreakableObject : MonoBehaviour {
 	private void OnHurtboxHit(float damage, Vector3 knockback) {
 		if (damage >= minDamageToBreak) {
 			wholeObject.SetActive(false);
+			brokenObject.transform.localPosition += wholeObject.transform.localPosition;
+			brokenObject.transform.localRotation = wholeObject.transform.localRotation;
+			if (eventWhenBroken != null) { eventWhenBroken.Invoke(); }
 			BrokenPiecesSetActive(true);
 			StartCoroutine(DespawnCoroutine());
 		}

@@ -11,6 +11,7 @@ public class PlayerHealthEventScriptableObject : ScriptableObject {
 	[SerializeField] public UnityEvent deathEvent;
 
 	public void SetHealthTo(float health) {
+		currentHp = health;
 		healthEvent.Invoke(health);
 	}
 

@@ -16,7 +16,7 @@ public class MusicController : MonoBehaviour {
 		musicSource.Play();
 	}
 
-	private void Update() {
+	private void FixedUpdate() {
 		musicTime = (float)musicSource.timeSamples / musicSource.clip.frequency;
 		enemyEvent.UpdateMusicTime(musicTime);
 		playerEvent.UpdateMusicTime(musicTime);

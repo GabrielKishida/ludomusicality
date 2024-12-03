@@ -1,17 +1,20 @@
+using System.Collections;
 using UnityEngine;
 
 
 public class PlayerController : MonoBehaviour {
 
 	[Header("Event Scriptable Objects")]
-	[SerializeField]
-	private PlayerHealthEventScriptableObject playerHealth;
+	[SerializeField] private PlayerHealthEventScriptableObject playerHealth;
+	[SerializeField] private EventScriptableObject healPlayerEvent;
+	[SerializeField] private EventScriptableObject disablePlayerEvent;
+	[SerializeField] private EventScriptableObject enablePlayerEvent;
 
 	[Header("External Components")]
 	[SerializeField] private PlayerMovementController movementController;
 	[SerializeField] private PlayerAttackController attackController;
 	[SerializeField] private PlayerInputManager inputManager;
-	[SerializeField] private PlayerVisualsController visualsController;
+	[SerializeField] private CharacterVisualsController visualsController;
 	[SerializeField] private PlayerInteractController interactionController;
 	[SerializeField] private Hurtbox hurtbox;
 
@@ -23,10 +26,15 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private PlayerMoveState moveState;
 	[SerializeField] private PlayerHoldAttackState holdAttackState;
 	[SerializeField] private PlayerAttackState attackState;
-	[SerializeField] private PlayerHurtState hurtState;
-	[SerializeField] private PlayerLongHurtState longHurtState;
 	[SerializeField] private PlayerDashState dashState;
 	[SerializeField] private PlayerInteractState interactState;
+
+	[Header("Vulnerability")]
+	[SerializeField] private bool isVulnerable = true;
+	[SerializeField] private float shortSlowTime = 0.5f;
+	[SerializeField] private float longSlowTime = 1.0f;
+	[SerializeField] private float shortInvulnerableTime = 1.0f;
+	[SerializeField] private float longInvulnerableTime = 1.5f;
 
 	private static PlayerController _instance;
 
@@ -62,7 +70,6 @@ public class PlayerController : MonoBehaviour {
 			case PlayerState.PlayerDashState: return dashState;
 			case PlayerState.PlayerHoldAttackState: return holdAttackState;
 			case PlayerState.PlayerAttackState: return attackState;
-			case PlayerState.PlayerHurtState: return hurtState;
 			case PlayerState.PlayerInteractState: return interactState;
 			default: return idleState;
 		}
@@ -73,8 +80,6 @@ public class PlayerController : MonoBehaviour {
 		moveState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		holdAttackState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		attackState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
-		hurtState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
-		longHurtState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		dashState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 		interactState.Setup(movementController, attackController, inputManager, visualsController, interactionController);
 
@@ -82,6 +87,9 @@ public class PlayerController : MonoBehaviour {
 
 		playerHealth.ResetHealth();
 		hurtbox.hurtboxHitEvent.AddListener(HurtPlayer);
+		healPlayerEvent.AddListener(FullyHeal);
+		disablePlayerEvent.AddListener(DisablePlayer);
+		enablePlayerEvent.AddListener(EnablePlayer);
 	}
 
 	private void Update() {
@@ -92,25 +100,46 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void HurtPlayer(float damage, Vector3 knockback) {
-		if (!hurtState.IsInvulnerable() && !longHurtState.IsInvulnerable()) {
-			if (stateMachine.currentState != hurtState && stateMachine.currentState != longHurtState) {
-				movementController.ReceiveKnockback(knockback);
-				playerHealth.Hurt(damage);
-				CameraShake.Instance.ApplyCameraShake(damage);
-				stateMachine.TransitionTo(hurtState);
-			}
+		if (isVulnerable) {
+			movementController.ReceiveKnockback(knockback);
+			playerHealth.Hurt(damage);
+			CameraShake.Instance.ApplyCameraShake(damage);
+			StartCoroutine(SlowDownCoroutine(shortSlowTime));
+			StartCoroutine(InvulnerableCoroutine(shortInvulnerableTime));
+
 		}
 	}
 
 	public void LongHurtPlayer(float damage, Vector3 knockback) {
-		if (!hurtState.IsInvulnerable() && !longHurtState.IsInvulnerable()) {
+		if (isVulnerable) {
 			movementController.ReceiveKnockback(knockback);
-			if (stateMachine.currentState != hurtState && stateMachine.currentState != longHurtState) {
-				playerHealth.Hurt(damage);
-				CameraShake.Instance.ApplyCameraShake(damage);
-				stateMachine.TransitionTo(longHurtState);
-			}
+			playerHealth.Hurt(damage);
+			CameraShake.Instance.ApplyCameraShake(damage);
+			StartCoroutine(SlowDownCoroutine(longSlowTime));
+			StartCoroutine(InvulnerableCoroutine(longInvulnerableTime));
+
 		}
+	}
+
+	private IEnumerator SlowDownCoroutine(float slowTime) {
+		movementController.SetSlowdownSpeed();
+		yield return new WaitForSeconds(slowTime);
+		if (stateMachine.currentState != holdAttackState) {
+			movementController.SetRegularSpeed();
+		}
+
+	}
+
+	private IEnumerator InvulnerableCoroutine(float invulnerableTime) {
+		isVulnerable = false;
+		visualsController.SetCharacterColor(Color.red);
+		yield return new WaitForSeconds(invulnerableTime);
+		visualsController.ResetCharacterColor();
+		isVulnerable = true;
+	}
+
+	public void FullyHeal() {
+		playerHealth.SetHealthTo(playerHealth.maxHp);
 	}
 
 	public void DisablePlayer() {

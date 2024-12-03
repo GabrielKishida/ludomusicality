@@ -15,3 +15,5 @@ MonoBehaviour:
   invokedEvent:
     m_PersistentCalls:
       m_Calls: []
+  timeToTrigger: 0
+  debugWhenCalled: 0

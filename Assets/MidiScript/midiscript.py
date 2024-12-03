@@ -16,7 +16,7 @@ def extract_note_hit_times(midi_file_path, note):
 
     # Get tempo and ticks per beat from the MIDI file
     ticks_per_beat = midi_file.ticks_per_beat
-    tempo = 600000  # Default tempo if not found in MIDI file
+    tempo = 625000  # Default tempo if not found in MIDI file
 
     # Iterate through each track in the MIDI file
     for track in midi_file.tracks:

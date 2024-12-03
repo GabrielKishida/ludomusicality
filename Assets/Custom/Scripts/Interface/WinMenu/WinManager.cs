@@ -21,7 +21,7 @@ public class WinManager : MonoBehaviour {
 	public void ReplayGame() {
 		Scene currentScene = SceneManager.GetActiveScene();
 		musicController.Reset();
-		SceneManager.LoadScene(currentScene.name);
+		SceneManager.LoadScene("Level 1");
 		Time.timeScale = 1;
 	}
 

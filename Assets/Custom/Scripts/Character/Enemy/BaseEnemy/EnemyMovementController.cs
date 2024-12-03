@@ -5,6 +5,7 @@ public class EnemyMovementController : MovementController {
 	[Header("Pathing")]
 	[SerializeField] private NavMeshPath path;
 	[SerializeField] private Transform target;
+	[SerializeField] private Transform playerTransform;
 	[SerializeField] private float waypointDistanceThreshold;
 	[SerializeField] public bool hasPath = false;
 	[SerializeField] public bool hasFinishedPath = false;
@@ -12,21 +13,31 @@ public class EnemyMovementController : MovementController {
 	private int currentWaypoint = 0;
 
 	public override void Start() {
+		if (playerTransform == null) {
+			playerTransform = PlayerController.Instance.transform;
+		}
+		if (target == null) {
+			target = playerTransform;
+		}
 		path = new NavMeshPath();
-		CalculatePathToTarget();
+		CalculatePathToPlayer();
 		base.Start();
 	}
 
-	public void CalculatePathToTarget() {
-		if (NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path)) {
+	public bool CalculatePathToTransform(Vector3 targetPosition) {
+		if (NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path)) {
 			currentWaypoint = 0;
 			hasPath = path.corners.Length > 0;
 			hasFinishedPath = !hasPath;
 		}
 		else {
-			Debug.Log("Failed to calculate path");
 			hasPath = false;
 		}
+		return hasPath;
+	}
+
+	public bool CalculatePathToPlayer() {
+		return CalculatePathToTransform(playerTransform.position);
 	}
 
 	public void MoveAlongPath() {

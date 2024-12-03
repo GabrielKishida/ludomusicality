@@ -3,34 +3,35 @@ using UnityEngine;
 
 
 public class EnemyRetreatState : EnemyBaseState {
-	private int SelectState() {
-		if (ShouldRetreat()) {
-			return (int)EnemyState.EnemyRetreatState;
-		}
-		else if (ShouldAim()) {
-			return (int)EnemyState.EnemyAimState;
-		}
-		else if (ShouldChase()) {
-			return (int)EnemyState.EnemyChaseState;
-		}
-		else {
-			return (int)EnemyState.EnemyIdleState;
-		}
+	[SerializeField] private float retreatDistance = 2.0f;
+	[SerializeField] private float timeBetweenCalculatePath = 0.1f;
+	[SerializeField] private float timeSinceLastCalculate = 0;
+
+	private Vector3 GetBackwardsDirection() {
+		Vector3 toEnemyDirection = targetTransform.position - transform.position;
+		return (toEnemyDirection * -1.0f).normalized;
+	}
+
+	private void CalculatePath() {
+		Vector3 targetPosition = transform.position + GetBackwardsDirection() * retreatDistance;
+		movementController.CalculatePathToTransform(targetPosition);
+		timeSinceLastCalculate = 0;
 	}
 
 	public override void Enter() {
-		//movementController.SetSlowdownSpeed();
-	}
-
-	public override void Exit() {
-		//movementController.SetRegularSpeed();
+		base.Enter();
+		CalculatePath();
 	}
 
 	public override void Do() {
 		movementController.RotateTowards(targetTransform.position - transform.position);
-		Vector3 runFromTargetDirection = transform.position - targetTransform.position;
-		Vector2 flatDirection = new Vector2(runFromTargetDirection.x, runFromTargetDirection.z).normalized;
-		//movementController.MoveCharacter(flatDirection);
+		if (movementController.hasPath && !movementController.hasFinishedPath) {
+			movementController.MoveAlongPath();
+		}
+		timeSinceLastCalculate += Time.deltaTime;
+		if (timeSinceLastCalculate > timeBetweenCalculatePath) {
+			CalculatePath();
+		}
 		nextStateNum = SelectState();
 		isComplete = true;
 	}

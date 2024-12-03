@@ -14,12 +14,12 @@ public class PlayerStateBase : State {
 	protected PlayerMovementController movementController;
 	protected PlayerAttackController attackController;
 	protected PlayerInputManager inputManager;
-	protected PlayerVisualsController visualsController;
+	protected CharacterVisualsController visualsController;
 	protected PlayerInteractController interactionController;
 
 	protected bool canPlayerInteract;
 
-	public void Setup(PlayerMovementController movementController, PlayerAttackController attackController, PlayerInputManager inputManager, PlayerVisualsController visualsController, PlayerInteractController interactionController) {
+	public virtual void Setup(PlayerMovementController movementController, PlayerAttackController attackController, PlayerInputManager inputManager, CharacterVisualsController visualsController, PlayerInteractController interactionController) {
 		this.movementController = movementController;
 		this.attackController = attackController;
 		this.inputManager = inputManager;

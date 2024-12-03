@@ -124,7 +124,7 @@ public class MovementController : MonoBehaviour {
 
 	public void FastRotateTowards(Vector3 direction) {
 		Quaternion targetRotation = Quaternion.LookRotation(direction);
-		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * 2 * Time.deltaTime);
+		transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * 4 * Time.deltaTime);
 	}
 
 	public virtual void Start() {

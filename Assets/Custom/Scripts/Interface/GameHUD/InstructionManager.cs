@@ -4,14 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public class Instruction {
+	public EventScriptableObject showInstructionEvent;
+	public EventScriptableObject hideInstructionEvent;
+	public Image image;
+	public bool visible = false;
+
+	public void SetVisibility(bool visible) {
+		this.visible = visible;
+	}
+
+}
+
+
 public class InstructionManager : MonoBehaviour {
 	[SerializeField] float fadeDuration = 0.5f;
-	[Serializable]
-	public struct Instruction {
-		public EventScriptableObject showInstructionEvent;
-		public EventScriptableObject hideInstructionEvent;
-		public Image image;
-	}
 
 	[SerializeField] public List<Instruction> instructions;
 
@@ -61,12 +69,18 @@ public class InstructionManager : MonoBehaviour {
 			Color uiColor = instruction.image.color;
 			uiColor.a = 0f;
 			instruction.image.color = uiColor;
+			instruction.SetVisibility(false);
 
 			void showInstruction() {
-				StartCoroutine(FadeInCoroutine(instruction));
+				if (!instruction.visible) { StartCoroutine(FadeInCoroutine(instruction)); }
+				instruction.SetVisibility(true);
 			}
+
 			void hideInstruction() {
-				StartCoroutine(FadeOutCoroutine(instruction));
+				if (instruction.visible) {
+					StartCoroutine(FadeOutCoroutine(instruction));
+					instruction.SetVisibility(false);
+				}
 			}
 			instruction.showInstructionEvent.AddListener(showInstruction);
 			instruction.hideInstructionEvent.AddListener(hideInstruction);

@@ -22,17 +22,17 @@ public class EnemyAttackController : MonoBehaviour {
 		return !Physics.Raycast(transform.position, directionToTarget.normalized, out RaycastHit hit, distanceToTarget, obstacleLayer);
 	}
 
-	public bool IsOnRetreatDistance() {
+	public bool IsOnCloseRange() {
 		float distance = Vector3.Distance(target.position, firePoint.position);
 		return distance < targetMinDesiredDistance;
 	}
 
-	public bool IsOnAdvanceDistance() {
+	public bool IsOnFarRange() {
 		float distance = Vector3.Distance(target.position, firePoint.position);
 		return distance > targetMaxDesiredDistance;
 	}
 
-	public bool IsOnAimDistance() {
+	public bool IsOnShootrange() {
 		float distance = Vector3.Distance(target.position, firePoint.position);
 		return targetMinDesiredDistance < distance && distance < targetMaxDesiredDistance;
 	}

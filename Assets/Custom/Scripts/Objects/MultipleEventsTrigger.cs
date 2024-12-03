@@ -24,7 +24,6 @@ public class MultipleEventsTrigger : MonoBehaviour {
 		if (!concludedEvents.Contains(eventScriptableObject)) {
 			concludedEvents.Add(eventScriptableObject);
 		}
-		Debug.Log(concludedEvents.Count - 1);
 		if (triggerEvents[concludedEvents.Count - 1] != null) {
 			triggerEvents[concludedEvents.Count - 1].Invoke();
 		}

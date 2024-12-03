@@ -7,22 +7,14 @@ public class PlayerDashState : PlayerStateBase {
 	[SerializeField] private Vector2 dashDirection;
 	public override void Enter() {
 		base.Enter();
-		visualsController.SetPlayerColor(Color.gray);
-		DashType dashType = movementController.StartDash();
+		visualsController.SetCharacterColor(Color.gray);
+		movementController.StartDash();
 		dashDirection = inputManager.ReadMovement();
-		switch (dashType) {
-			case DashType.HyperDash:
-
-				break;
-			case DashType.RegularDash:
-			default:
-				break;
-		}
 	}
 
 	public override void Exit() {
 		base.Exit();
-		visualsController.ResetPlayerColor();
+		visualsController.ResetCharacterColor();
 		movementController.SetRegularSpeed();
 	}
 
