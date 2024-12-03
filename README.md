@@ -1,10 +1,15 @@
 # Ludomusicalidade: Projeto de Tese de Conclusão de Curso (TCC)
 
-Um projeto de jogo 3D que implementa conceitos lúdicos e musicais, estudando como sua interação agrega a jogos virtuais.
-
 ### Engenharia de Computação PCS - POLI-USP 
 #### Gabriel Yugo Nascimento Kishida -- 2024
 
+Um projeto de jogo 3D que implementa conceitos lúdicos e musicais, estudando como sua interação agrega a jogos virtuais.
+
+**[Acesse o Projeto no Itch.io para testar!](https://kaliyahk.itch.io/ludomusicality)**
+
+**[Responda ao formulário!](https://docs.google.com/forms/d/e/1FAIpQLSfH9ZPZbz_TqATdVDDEiOEP0lwxCjFRcUZ0TjtLhLTP_FQUyQ/viewform?usp=sf_link)**
+
+----
 ## Motivação
 
 A **indústria de jogos** tem desempenhado um papel crucial na sociedade contemporânea, tanto como uma forma de entretenimento quanto uma plataforma para a expressão artística e cultural. Com a evolução tecnológica e a crescente demanda por experiências cada vez mais imersivas, os desenvolvedores de jogos têm explorado diversas formas de aprimorar a interação entre o jogador e o ambiente virtual. Um aspecto que se destaca neste meio é a **integração da música** como elemento essencial na experiência de jogo.
@@ -38,13 +43,16 @@ O resultado do projeto foi uma fase de duração de aproximadamente 10 a 15 minu
 Para montar esta fase-teste, foram utilizados **assets** (modelos 3D e texturas) que foram fornecidas pelo plano estudantil da **Unity**, do estúdio **Synty Studios**. Após um planejamento de como seria a fase, sua montagem foi feita utilizando conceitos de *Level Design* como o **flow area** (método para engajamento de jogadores) e **prospect & refuge** (conceito para desenvolvimento de espaços de segurança e perigo para o jogador).
 
 ![Workflow](Images/map-screenshot.png)
+
 Fig2: Captura de tela de uma visão do mapa
 
 ![Workflow](Images/ludogirl.png)
+
 Fig3: Imagem do avatar do jogador
 
 ![Workflow](Images/cop-screenshot.png)
-Fig3: Captura de tela de uma das regiões do jogo
+
+Fig4: Captura de tela de uma das regiões do jogo
 
 -------
 Após a montagem da fase, foi realizada uma etapa de **validações**.
@@ -56,3 +64,4 @@ Para validar os objetivos do projeto, disponibilizamos o jogo em uma plataforma 
 > A mecânica de sincronia dos ataques é o grande brilho do jogo. Funciona bem, é divertido e foi muito bem implementada. 
 
 **[Acesse o Projeto no Itch.io para testar!](https://kaliyahk.itch.io/ludomusicality)**
+**[Responda ao formulário!](https://docs.google.com/forms/d/e/1FAIpQLSfH9ZPZbz_TqATdVDDEiOEP0lwxCjFRcUZ0TjtLhLTP_FQUyQ/viewform?usp=sf_link)**
