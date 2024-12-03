@@ -3,38 +3,38 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
 using Unity.VisualScripting;
+using System.Globalization;
 
 [CreateAssetMenu(fileName = "MusicEventScriptableObject", menuName = "ScriptableObjects/MusicEvent")]
 public class MusicEventScriptableObject : ScriptableObject {
-	[SerializeField] private string timeFileName;
 	[SerializeField] private int currentStep = 0;
 	[SerializeField] private float[] eventTimes;
 	[SerializeField] private float musicTime;
+	[SerializeField] private TextAsset timeFile;
 
 	[SerializeField] public UnityEvent musicEvent;
-
-	private bool reachedEnd = false;
+	[SerializeField] public bool reachedEnd;
 
 	public void OnEnable() {
+		Reset();
+		eventTimes = ReadEventTimes();
+	}
+
+	public void Reset() {
 		this.currentStep = 0;
-		eventTimes = ReadEventTimes(timeFileName);
 		reachedEnd = false;
 	}
 
-	float[] ReadEventTimes(string timeFileName) {
-		TextAsset textAsset = Resources.Load<TextAsset>(timeFileName);
+	float[] ReadEventTimes() {
 		List<float> floatList = new List<float>();
 
-		if (textAsset != null) {
-			string[] lines = textAsset.text.Split('\n');
+		if (timeFile != null) {
+			string[] lines = timeFile.text.Split('\n');
 			foreach (string line in lines) {
-				if (float.TryParse(line, out float number)) {
-					floatList.Add(number / 1000.0f);
+				if (float.TryParse(line, NumberStyles.Float, CultureInfo.InvariantCulture, out float number)) {
+					floatList.Add(number);
 				}
 			}
-		}
-		else {
-			Debug.LogError("Text file " + timeFileName + " not found in Resources folder.");
 		}
 		return floatList.ToArray();
 	}
@@ -42,15 +42,14 @@ public class MusicEventScriptableObject : ScriptableObject {
 	public void UpdateMusicTime(float time) {
 		musicTime = time;
 
-		if (time < eventTimes[0] && currentStep > 0) {
+		if (time < 1.0 && reachedEnd) {
 			reachedEnd = false;
-			currentStep = 0;
 		}
 
-		if (time > eventTimes[currentStep] && !reachedEnd) {
+		if (time > eventTimes[currentStep] - 0.0f && !reachedEnd) {
 			musicEvent.Invoke();
-
 			currentStep++;
+
 			if (currentStep >= eventTimes.Length) {
 				currentStep = 0;
 				reachedEnd = true;
@@ -58,15 +57,15 @@ public class MusicEventScriptableObject : ScriptableObject {
 		}
 	}
 
-	public bool CheckEventTriggerNearTime(float timeThreshold) {
-		bool nearCurrentStep = Math.Abs(musicTime - eventTimes[currentStep]) < timeThreshold;
+	public bool CheckEventNearTriggerTime(float timeThreshold) {
+		bool nearCurrentStep = Math.Abs(musicTime - eventTimes[currentStep] + 0.0f) < timeThreshold;
 		bool nearPreviousStep = false;
 		bool nearNextStep = false;
 		if (currentStep > 0) {
-			nearPreviousStep = Math.Abs(musicTime - eventTimes[currentStep - 1]) < timeThreshold;
+			nearPreviousStep = Math.Abs(musicTime - eventTimes[currentStep - 1] + 0.0f) < timeThreshold;
 		}
 		else if (currentStep <= eventTimes.Length) {
-			nearNextStep = Math.Abs(musicTime - eventTimes[currentStep + 1]) < timeThreshold;
+			nearNextStep = Math.Abs(musicTime - eventTimes[currentStep + 1] + 0.0f) < timeThreshold;
 		}
 		return nearCurrentStep || nearPreviousStep || nearNextStep;
 	}

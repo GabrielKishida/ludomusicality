@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerAttack
+  - Projectile
+  - Enemy
+  - Hazard
   layers:
   - Default
   - TransparentFX
@@ -12,11 +15,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Projectiles
+  - Debris
+  - Hitboxes
+  - RangeEffects
   - 
   - 
   - 

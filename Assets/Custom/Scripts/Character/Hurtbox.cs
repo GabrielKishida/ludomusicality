@@ -1,14 +1,10 @@
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+using UnityEngine.Events;
 
 public class Hurtbox : MonoBehaviour {
-	[SerializeField] private CharacterManager characterManager;
+	public UnityEvent<float, Vector3> hurtboxHitEvent;
 
 	public void OnTakeDamage(float damage, Vector3 knockback) {
-		characterManager.OnHurtboxHit(damage, knockback);
-	}
-
-	private void Start() {
-		characterManager = GetComponent<CharacterManager>();
+		hurtboxHitEvent.Invoke(damage, knockback);
 	}
 }

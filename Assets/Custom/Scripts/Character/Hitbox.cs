@@ -4,6 +4,8 @@ using UnityEngine.TextCore.Text;
 public class Hitbox : MonoBehaviour {
 	[SerializeField] protected float knockbackForce = 5.0f;
 	[SerializeField] protected float damage = 1.0f;
+	[SerializeField] protected string immuneTag;
+	[SerializeField] protected bool isFromPlayer = false;
 	public Vector3 GetKnockbackByPosition(Collider collider) {
 		Vector3 knockback;
 		if (transform.parent != null) {
@@ -22,12 +24,20 @@ public class Hitbox : MonoBehaviour {
 		if (rb != null) {
 			rb.AddForce(knockback, ForceMode.Impulse);
 		}
-		else if (hurtbox != null) {
+		if (hurtbox != null) {
 			hurtbox.OnTakeDamage(damage, knockback);
+		}
+		if ((hurtbox != null || rb != null) && isFromPlayer) {
+			CameraShake.Instance.ApplyCameraShake(damage * 0.5f);
 		}
 	}
 
 	private void OnTriggerEnter(Collider collider) {
+		if (immuneTag != null) {
+			if (collider.CompareTag(immuneTag)) {
+				return;
+			}
+		}
 		Vector3 knockback = GetKnockbackByPosition(collider);
 		ApplyKnockback(collider, knockback);
 	}

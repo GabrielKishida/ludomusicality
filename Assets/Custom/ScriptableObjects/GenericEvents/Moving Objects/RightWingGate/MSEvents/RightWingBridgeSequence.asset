@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47bdf83bb887eb84f825b28d7dde6d28, type: 3}
+  m_Name: RightWingBridgeSequence
+  m_EditorClassIdentifier: 
+  invokedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  timeToTrigger: 0
+  debugWhenCalled: 0
+  events:
+  - {fileID: 11400000, guid: afbc4e915c0b1de43b7208b1726c14c6, type: 2}
+  - {fileID: 11400000, guid: a45b9600ef5eaf0488b86e98b81b45ed, type: 2}
+  - {fileID: 11400000, guid: bcda33ed7968f7d4f942cf7fd20c90b4, type: 2}
+  - {fileID: 11400000, guid: 088b9809b7c2ad44f80d499b090ccc81, type: 2}
