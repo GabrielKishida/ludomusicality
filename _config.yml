@@ -1,3 +1,12 @@
 theme: jekyll-theme-minimal
 title: Ludomusicalidade para Imersão em Jogos Virtuais
 description: Projeto de Tese de Conclusão de Curso -- Gabriel Yugo Nascimento Kishida - 2024
+
+github_username: GabrielKishida  # Updates the "View on GitHub" link
+sidebar_links:
+  - title: Ver o Projeto no GitHub
+    url: https://github.com/GabrielKishida/ludomusicality
+  - title: Jogue o jogo
+    url: https://kaliyahk.itch.io/ludomusicality
+  - title: Responda ao formulário
+    url: https://docs.google.com/forms/d/e/1FAIpQLSfH9ZPZbz_TqATdVDDEiOEP0lwxCjFRcUZ0TjtLhLTP_FQUyQ/viewform?usp=sf_link
