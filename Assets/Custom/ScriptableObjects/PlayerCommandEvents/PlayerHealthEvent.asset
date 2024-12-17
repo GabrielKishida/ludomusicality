@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f4beb3c31ad2c43a1ead8e714583cb, type: 3}
   m_Name: PlayerHealthEvent
   m_EditorClassIdentifier: 
-  currentHp: 0
-  maxHp: 5
+  currentHp: 7
+  maxHp: 7
   healthEvent:
     m_PersistentCalls:
       m_Calls: []

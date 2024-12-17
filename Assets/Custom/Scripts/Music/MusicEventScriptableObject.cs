@@ -46,7 +46,7 @@ public class MusicEventScriptableObject : ScriptableObject {
 			reachedEnd = false;
 		}
 
-		if (time > eventTimes[currentStep] - 0.0f && !reachedEnd) {
+		if (time > eventTimes[currentStep] - 0.1f && !reachedEnd) {
 			musicEvent.Invoke();
 			currentStep++;
 
@@ -58,14 +58,14 @@ public class MusicEventScriptableObject : ScriptableObject {
 	}
 
 	public bool CheckEventNearTriggerTime(float timeThreshold) {
-		bool nearCurrentStep = Math.Abs(musicTime - eventTimes[currentStep] + 0.0f) < timeThreshold;
+		bool nearCurrentStep = Math.Abs(musicTime - eventTimes[currentStep] + 0.1f) < timeThreshold;
 		bool nearPreviousStep = false;
 		bool nearNextStep = false;
 		if (currentStep > 0) {
-			nearPreviousStep = Math.Abs(musicTime - eventTimes[currentStep - 1] + 0.0f) < timeThreshold;
+			nearPreviousStep = Math.Abs(musicTime - eventTimes[currentStep - 1] + 0.1f) < timeThreshold;
 		}
 		else if (currentStep <= eventTimes.Length) {
-			nearNextStep = Math.Abs(musicTime - eventTimes[currentStep + 1] + 0.0f) < timeThreshold;
+			nearNextStep = Math.Abs(musicTime - eventTimes[currentStep + 1] + 0.1f) < timeThreshold;
 		}
 		return nearCurrentStep || nearPreviousStep || nearNextStep;
 	}
